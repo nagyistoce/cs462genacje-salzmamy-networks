@@ -50,7 +50,7 @@ byte* to_little_endian(byte* bytes)
 
 	return bytes;
 }
-
+/*
 int endian() {
 	// Create a number large enough to screw up byte ordering across big/little endian platforms
 	uint32_t num = 123456789;
@@ -65,4 +65,4 @@ int endian() {
 	to_little_endian(bytes);
 	
 	return 0;
-}
+}*/
