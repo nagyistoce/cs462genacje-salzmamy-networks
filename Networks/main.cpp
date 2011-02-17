@@ -60,7 +60,7 @@ void encryption_demo() {
     //b.~Blowfish();
 
 }
-
+/*
 int main(int argc, char** argv) {
 
     // enter 'client', 'server', or 'receiver'
@@ -91,4 +91,7 @@ int main(int argc, char** argv) {
     
     return (0);
 }
+ */
+
+
 

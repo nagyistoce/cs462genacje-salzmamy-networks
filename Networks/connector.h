@@ -17,7 +17,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define MAXBUFLEN 100
+#define MAXBUFLEN 128
 
 using namespace std;
 
@@ -34,11 +34,11 @@ public:
 
 	void send (string);
 	void listen();
-
+        char* getMsg();
 private:
 	int sockfd;
 	struct sockaddr_in my_addr; // my address information
-	struct sockaddr_in their_addr; // connector’s address information
+	struct sockaddr_in their_addr; // connectorï¿½s address information
 	int addr_len, numbytes;
 	char buf[MAXBUFLEN];
 	struct hostent * he;

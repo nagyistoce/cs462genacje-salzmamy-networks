@@ -76,3 +76,7 @@ void Connector :: listen () {
 
 	cout << "message received: " << buf << endl;
 }
+
+char* Connector::getMsg() {
+    return (char*) buf;
+}

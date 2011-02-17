@@ -8,6 +8,7 @@
 #include <iostream>
 #include <stdio.h>
 #include "connector.h"
+#include "blowfish.h"
 
 #define PORT 9000
 #define ANDY "andy.cs.uwec.edu"
@@ -23,10 +24,48 @@ int main (void) {
 
 	if (role == 'l') {
 		Connector c(PORT);
-		c.listen();
+
+                while (1) {
+                    c.listen();
+                    char* msg = c.getMsg();
+                    Blowfish b = Blowfish();
+
+                    b.Set_Passwd("31337");
+                    cout << "Received msg: " << msg << endl;
+                    b.Decrypt((void*)msg, 128);
+                    cout << "Decrypted msg: " << msg << endl;
+
+                }
+		
 	} else if (role == 't') {
 		Connector c(ANDY, PORT);
-		c.send("testing, 1, 2, 3");
+
+                cout << "Talker: Enter messages to encrypt and send...\n";
+
+                Blowfish b = Blowfish();
+                b.Set_Passwd("31337");
+
+                char msg[128];
+                bool quit = false;
+                while(!quit) {
+                    // flush input stream
+                    cin.ignore(128, '\n');
+                    // make sure cin gets the whole thing
+                    cin.get(msg, 128);
+
+                    if (msg == "-quit") {
+                        quit = true;
+                        continue;
+                    } else if (msg != "") {
+
+                        cout << "Encrypting msg: " << msg << endl;
+                        b.Encrypt((void*)msg, 128);
+                        cout << "Sending encrypted msg: " << msg << endl;
+                        c.send(msg);
+                    }
+                }
+                
+		
 	} else {
 		perror ("incorrect role input");
 		exit (1);
