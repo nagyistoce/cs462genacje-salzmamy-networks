@@ -14,6 +14,7 @@
 #define PORT 9000
 #define ANDY "andy.cs.uwec.edu"
 #define CLARK "clark.cs.uwec.edu"
+#define SHIVA "shiva.cs.uwec.edu"
 
 char ask_role ();
 
@@ -33,7 +34,7 @@ int main (void) {
                 }
 		
 	} else if (role == 't') {
-		Connector c(ANDY, PORT);
+		Connector c(SHIVA, PORT);
                 c.setKey("31337");
                 cout << "Talker: Enter messages to encrypt and send...\n";
 

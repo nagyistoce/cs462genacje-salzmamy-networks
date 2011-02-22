@@ -416,47 +416,86 @@ void Blowfish::Set_Passwd(char *Passwd)
 
 void Blowfish::Encrypt(void *Ptr,unsigned int N_Bytes)
 {
-  unsigned int i;
-  DWord *Work;
+    unsigned int i;
+    unsigned char *Work;
 
-  if (N_Bytes%8)
-  {
-    cerr << "\aBlowfish requires the input to be a multiple of 8 bytes (64bits) to work.\n";
-    return;
-  }
+    if (N_Bytes%8)
+    {
+            return;
+    }
 
-	N_Bytes /= 8;
-  Work = (DWord *)Ptr;
+    Work = (unsigned char *)Ptr;
 
-  for (i=0;i<N_Bytes;i++)
-  {
-    BF_En(&Work->word0,&Work->word1);
-    Work++;
-  }
+    for (i=0;i<N_Bytes;i+=8)
+    {
+        Word word0, word1;
 
-  Work = NULL;
+        word0.byte.zero = Work[i];
+        word0.byte.one = Work[i+1];
+        word0.byte.two = Work[i+2];
+        word0.byte.three = Work[i+3];
+
+        word1.byte.zero = Work[i+4];
+        word1.byte.one = Work[i+5];
+        word1.byte.two = Work[i+6];
+        word1.byte.three = Work[i+7];
+
+        BF_En(&word0, &word1);
+
+        Work[i] = word0.byte.zero;
+        Work[i+1] = word0.byte.one;
+        Work[i+2] = word0.byte.two;
+        Work[i+3] = word0.byte.three;
+
+        Work[i+4] = word1.byte.zero;
+        Work[i+5] = word1.byte.one;
+        Work[i+6] = word1.byte.two;
+        Work[i+7] = word1.byte.three;
+    }
+
+    Work = NULL;
 }
 
-void Blowfish::Decrypt(void *Ptr,unsigned int N_Bytes)
+void Blowfish::Decrypt(void *Ptr, unsigned int N_Bytes)
 {
-  unsigned int i;
-  DWord *Work;
+    unsigned int i;
+    unsigned char *Work;
 
-  if (N_Bytes%8)
-  {
-    cerr << "\aBlowfish requires the input to be a multiple of 8 bytes (64bits) to work.\n";
-    return;
-  }
+    if (N_Bytes%8)
+    {
+            return;
+    }
 
-	N_Bytes /= 8;
-  Work = (DWord *)Ptr;
-  for (i=0;i<N_Bytes;i++)
-  {
-    BF_De(&Work->word0,&Work->word1);
-    Work++;
-  }
+    Work = (unsigned char *)Ptr;
+    for (i=0;i<N_Bytes;i+=8)
+    {
+        Word word0, word1;
 
-  Work = NULL;
+        word0.byte.zero = Work[i];
+        word0.byte.one = Work[i+1];
+        word0.byte.two = Work[i+2];
+        word0.byte.three = Work[i+3];
+
+        word1.byte.zero = Work[i+4];
+        word1.byte.one = Work[i+5];
+        word1.byte.two = Work[i+6];
+        word1.byte.three = Work[i+7];
+
+        BF_De(&word0, &word1);
+
+        Work[i] = word0.byte.zero;
+        Work[i+1] = word0.byte.one;
+        Work[i+2] = word0.byte.two;
+        Work[i+3] = word0.byte.three;
+
+        Work[i+4] = word1.byte.zero;
+        Work[i+5] = word1.byte.one;
+        Work[i+6] = word1.byte.two;
+        Work[i+7] = word1.byte.three;
+    }
+
+    Work = NULL;
 }
+
 
 

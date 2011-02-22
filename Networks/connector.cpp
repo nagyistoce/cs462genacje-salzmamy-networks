@@ -63,7 +63,7 @@ Connector :: ~Connector () {
 /* Sends msg to specified addr on port */
 void Connector :: send (char* msg) {
     cout << "Original message: " << msg << endl;
-    //key.Encrypt((void*)msg, msgSize);
+    key.Encrypt((void*)msg, msgSize);
     if ((numbytes = sendto (sockfd, (void *) msg, strlen(msg), 0, (struct sockaddr *) & their_addr, sizeof (struct sockaddr))) == -1) {
             perror("send failed:");
             exit(1);
@@ -80,7 +80,7 @@ void Connector :: listen () {
     }
 
     cout << "Encrypted mesasge received: " << buf << endl;
-    //key.Decrypt((void*)buf, msgSize);
+    key.Decrypt((void*)buf, msgSize);
     buf[numbytes] = '\0';
 
     cout << "Decrypted mesasge: " << buf << endl;
