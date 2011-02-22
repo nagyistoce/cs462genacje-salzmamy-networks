@@ -7,8 +7,9 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <string.h>
 #include "connector.h"
-#include "blowfish.h"
+
 
 #define PORT 9000
 #define ANDY "andy.cs.uwec.edu"
@@ -24,28 +25,20 @@ int main (void) {
 
 	if (role == 'l') {
 		Connector c(PORT);
-
+                c.setKey("31337");
                 while (1) {
                     c.listen();
                     char* msg = c.getMsg();
-                    Blowfish b = Blowfish();
-
-                    b.Set_Passwd("31337");
-                    cout << "Received msg: " << msg << endl;
-                    b.Decrypt((void*)msg, 128);
-                    cout << "Decrypted msg: " << msg << endl;
-
+                    
                 }
 		
 	} else if (role == 't') {
 		Connector c(ANDY, PORT);
-
+                c.setKey("31337");
                 cout << "Talker: Enter messages to encrypt and send...\n";
 
-                Blowfish b = Blowfish();
-                b.Set_Passwd("31337");
-
-                char msg[128];
+                
+                char msg[c.getMsgSize()];
                 bool quit = false;
                 while(!quit) {
                     // flush input stream
@@ -56,13 +49,10 @@ int main (void) {
                     if (msg == "-quit") {
                         quit = true;
                         continue;
-                    } else if (msg != "") {
-
-                        cout << "Encrypting msg: " << msg << endl;
-                        b.Encrypt((void*)msg, 128);
-                        cout << "Sending encrypted msg: " << msg << endl;
-                        c.send(msg);
-                    }
+                    } /*else if ((msg == "") || (msg[0] == "\n")) {
+                        continue;
+                    }*/
+                    c.send(msg);
                 }
                 
 		

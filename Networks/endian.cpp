@@ -35,34 +35,4 @@
 #endif
 
 
-/*
- * To use the above:
- */
 
-
-typedef unsigned char byte;
-
-byte* to_little_endian(byte* bytes)
-{
-#ifdef __BO_BIG_ENDIAN
-	swapByteOrder(bytes);
-#endif
-
-	return bytes;
-}
-/*
-int endian() {
-	// Create a number large enough to screw up byte ordering across big/little endian platforms
-	uint32_t num = 123456789;
-	
-	// Create a place to store a 32 bit integer
-	byte bytes[4];
-	
-	// Copy the byte value of num into bytes (the bytes will be in a different order on big/little endian machines)
-	memcpy(&dest[0], &num, sizeof(uint32_t));
-	
-	// Force little-endian before sending over the network
-	to_little_endian(bytes);
-	
-	return 0;
-}*/
