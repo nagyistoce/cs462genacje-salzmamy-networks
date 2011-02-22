@@ -17,6 +17,8 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
+#include "blowfish.h"
+
 #define MAXBUFLEN 128
 
 using namespace std;
@@ -27,20 +29,25 @@ using namespace std;
 class Connector {
 
 public:
-	Connector ();
-	Connector (int);
-	Connector (string, int);
-	~Connector ();
+    Connector ();
+    Connector (int);
+    Connector (string, int);
+    ~Connector ();
 
-	void send (string);
-	void listen();
-        char* getMsg();
+    void send (char*);
+    void listen();
+    char* getMsg();
+    void setMsgSize(int);
+    int getMsgSize();
+    void setKey(char*);
 private:
-	int sockfd;
-	struct sockaddr_in my_addr; // my address information
-	struct sockaddr_in their_addr; // connector�s address information
-	int addr_len, numbytes;
-	char buf[MAXBUFLEN];
-	struct hostent * he;
+    int msgSize;// can set to something different later if we want...
+    Blowfish key;
+    int sockfd;
+    struct sockaddr_in my_addr; // my address information
+    struct sockaddr_in their_addr; // connector�s address information
+    int addr_len, numbytes;
+    char buf[MAXBUFLEN];
+    struct hostent * he;
 };
 #endif /* CONNECTOR_H_ */
