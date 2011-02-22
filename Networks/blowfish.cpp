@@ -90,6 +90,11 @@ void Blowfish::BF_De(Word *x1,Word *x2)
 
 Blowfish::Blowfish()
 {
+#ifdef __BO_BIG_ENDIAN
+    cout << "Blowfish initialized with big endianness.\n";
+#else
+    cout << "Blowfish initialized with little endianness.\n";
+#endif
   Reset();
 }
 
