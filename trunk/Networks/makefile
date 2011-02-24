@@ -1,12 +1,12 @@
 ## Makefile for a typical program
 
 CC=g++
-CFLAGS=-g -Wall
+##CFLAGS=-g -Wall
 LIBSSHIVA= -lpthread -lsocket -lnsl -lrt
 
 HFILES=	connector.h blowfish.h
 
-CCFILES= $(HFILES:.h=.cpp) main_mark.cpp endian.cpp f.cpp
+CCFILES= $(HFILES:.h=.cpp) *.cpp
 
 OFILES= $(CCFILES:.cpp=.o)
 
