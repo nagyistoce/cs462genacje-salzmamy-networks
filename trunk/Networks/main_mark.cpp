@@ -34,9 +34,11 @@ int main (void) {
                 }
 		
 	} else if (role == 't') {
-		Connector c(SHIVA, PORT);
+                // hard coded to the listener for now...
+		Connector c(CLARK, PORT);
                 c.setKey("31337");
-                cout << "Talker: Enter messages to encrypt and send...\n";
+                cout << "Talker: Enter messages to encrypt and send...\n"
+                << "Listener set to: " << CLARK << endl;
 
                 
                 char msg[c.getMsgSize()];
