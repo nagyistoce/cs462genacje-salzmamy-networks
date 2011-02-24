@@ -1,5 +1,5 @@
 /*
- * main.cc
+ * main.cpp
  *
  *  Created on: Feb 15, 2011
  *      Author: salzmamy
