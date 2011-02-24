@@ -4,9 +4,21 @@ CC=g++
 CFLAGS=-g -Wall
 LIBSSHIVA= -lpthread -lsocket -lnsl -lrt
 
+HFILES=	connector.h blowfish.h
+
 CCFILES= $(HFILES:.h=.cpp) main_mark.cpp endian.cpp f.cpp
 
+OFILES= $(CCFILES:.cpp=.o)
 
+##rules
+
+all: link
+
+.cpp.o:	$(CCFILES) $(HFILES)
+	$(CC) $(CFLAGS) -c $*.cpp
+
+link:	$(OFILES)
+	$(CC) $(CFLAGS)  -o rungoonies $(OFILES)
 
 goonies:
 	$(CC) $(CFLAGS) $(CCFILES) -o rungoonies
