@@ -1,97 +1,105 @@
-/* 
- * File:   main.cpp
- * Author: genacje
+/*
+ * main.cpp
  *
- * Created on February 15, 2011, 3:34 PM
+ *  Created on: Feb 15, 2011
+ *      Author: salzmamy
  */
-#include "blowfish.h"
 
-#include <sys/wait.h>
-#include <signal.h>
 #include <iostream>
-#include <string>
+#include <stdio.h>
+#include <string.h>
+#include "connector.h"
+#include "Node.h"
+#include "Node_KDC.h"
+
+#define PORT 9001
+#define ANDY "andy.cs.uwec.edu"
+#define CLARK "clark.cs.uwec.edu"
+#define SHIVA "shiva.cs.uwec.edu"
+
+char ask_role ();
+
 using namespace std;
 
-/*
- * 
- */
+int main (void) {
 
+        char role = ask_role();
 
-// Requirements for blowfish to work:
-// a key known to both parties
-// a data size common to both parties
-//  ->message data size must be a multiple of 8 bytes.
+        // example for KDC:
+        // Node kdc = Node_KDC(c);
+        // kdc.listen();
+        Connector *c = new Connector(PORT);
+        switch (role) {
+            case 'k':
+                Node_KDC kdc = Node_KDC(*c);
+                kdc.listen();
+            case 'i':
+                // initiator:
+                // input ka, send request, recv response from kdc
+                // send encrypted ks to reciever
+                // receive encrypted nonce
+                // send fnonce
+            case 'r':
+                // receiver:
+                // input kb, receive ks,
+                // send nonce
+                // receive and validate nonce
 
-void encryption_demo() {
-    int inputsize = 512;
-
-    char input[inputsize];
-
-
-    Blowfish b = Blowfish();
-    b.Set_Passwd("313337");
-
-
-    bool goodInput = false;
-    cout << "Enter a message to encrypt." << endl;
-    while (!goodInput) {
-
-        // flush input stream
-        cin.ignore(inputsize, '\n');
-        // make sure cin gets the whole thing
-        cin.get(input, inputsize);
-
-        if (input != "") {
-            goodInput = true;
-        } else continue;
-
-    }
-
-    cout << "Input: " << input << endl;
-
-    b.Encrypt((void*) input, inputsize);
-
-    cout << "Encrypted message: " << input << endl;
-
-    b.Decrypt((void*) input, inputsize);
-
-    cout << "Decrypted message: " << input << endl;
-
-    //b.~Blowfish();
-
-}
-/*
-int main(int argc, char** argv) {
-
-    // enter 'client', 'server', or 'receiver'
-    bool goodInput = false;
-
-    cout << "Enter your role ('k'=kdc, 'i'=initiator, 'r'=receiver)" << endl;
-
-    int inputsize = 512;
-
-    char input[inputsize];
-    while (!goodInput) {
-        cin >> input;
-        goodInput = true;
-        if (input[0]=='k') {
-            
-        } else if (input[0]=='i') {
-            
-        } else if (input[0] == 'r') {
-            
-        } else {
-            goodInput = false;
-            cout << "Invalid input" << endl;
         }
-    }
 
-    encryption_demo();
 
-    
-    return (0);
+
+        /*
+        if (role == 'l') {
+
+
+
+
+                Connector* c = new Connector(PORT);
+                c->setKey("31337");
+                while (1) {
+                    c->listen();
+                    char* msg = c->getMsg();
+
+                }
+
+        } else if (role == 't') {
+                // hard coded to the listener for now...
+                Connector* c = new Connector(CLARK, PORT);
+                c->setKey("31337");
+                cout << "Talker: Enter messages to encrypt and send...\n"
+                << "Listener set to: " << CLARK << endl;
+
+
+                char msg[c->getMsgSize()];
+                bool quit = false;
+                while(!quit) {
+                    // flush input stream
+                    cin.ignore(128, '\n');
+                    // make sure cin gets the whole thing
+                    cin.get(msg, 128);
+
+                    if (msg == "-quit") {
+                        quit = true;
+                        continue;
+                    }
+                    c->send(msg);
+                }
+
+
+        } else {
+                perror ("incorrect role input");
+                exit (1);
+        } */
+
+        return 0;
 }
- */
 
+char ask_role () {
+        char role;
 
+        cout << "What role are you?  l - listener : t - talker\n";
+        cin >> role;
 
+        return role;
+}
