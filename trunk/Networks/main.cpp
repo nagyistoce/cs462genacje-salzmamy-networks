@@ -28,42 +28,45 @@ int main (void) {
         // example for KDC:
         // Node kdc = Node_KDC(c);
         // kdc.listen();
+
         Connector *c = new Connector(PORT);
-        switch (role) {
-            case 'k':
+        
+        
+        if (role == 'k') {
                 Node_KDC kdc = Node_KDC(c);
                 kdc.listen();
-                
-            /*case 'i':
-                // initiator:
-                // input ka, send request, recv response from kdc
-                // send encrypted ks to reciever
-                // receive encrypted nonce
-                // send fnonce
-                break;
-            case 'r':
-                // receiver:
-                // input kb, receive ks,
-                // send nonce
-                // receive and validate nonce
-                break;
-            default:
-                break;*/
+        } else if (role == 'i') {
+            // initiator:
+            // input ka, send request, recv response from kdc
+            // send encrypted ks to reciever
+            // receive encrypted nonce
+            // send fnonce
+
+            // sendFile
+
+        } else if (role == 'r') {
+            // receiver:
+            // input kb, receive ks,
+            // send nonce
+            // receive and validate nonce
+
+            // receiveFile
+
         }
+        
 
 
-
-        /*
         if (role == 'l') {
 
 
 
 
-                Connector* c = new Connector(PORT);
+                
                 c->setKey("31337");
                 while (1) {
                     c->listen();
                     char* msg = c->getMsg();
+                    c->send("ack");
 
                 }
 
@@ -88,13 +91,15 @@ int main (void) {
                         continue;
                     }
                     c->send(msg);
+                    c->listen();
+                    cout << c->getMsg() << endl;
                 }
 
 
         } else {
                 perror ("incorrect role input");
                 exit (1);
-        } */
+        } 
 
         delete c;
 
@@ -104,7 +109,7 @@ int main (void) {
 char ask_role () {
         char role;
 
-        cout << "What role are you?  l - listener : t - talker\n";
+        cout << "What role are you?  k - KDC :: l - listener : t - talker\n";
         cin >> role;
 
         return role;

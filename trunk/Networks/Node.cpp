@@ -24,7 +24,11 @@ void Node::getStr(char* key, char* prompt) {
     
     char input[KEYSIZE];
 
-    cin >> key;
+    cin.ignore(KEYSIZE, '\n');
+    // make sure cin gets the whole thing
+    cin.get(input, KEYSIZE);
+
+    memcpy((void*)key, (void*)input, KEYSIZE);
 
 }
 
