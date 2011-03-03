@@ -4,7 +4,7 @@ CC=g++
 ##CFLAGS=-g -Wall
 LIBSSHIVA= -lpthread -lsocket -lnsl -lrt
 
-HFILES=	connector.h blowfish.h
+HFILES=	connector.h blowfish.h Node.h Node_KDC.h
 
 CCFILES= $(HFILES:.h=.cpp) *.cpp
 
