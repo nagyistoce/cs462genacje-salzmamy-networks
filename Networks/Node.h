@@ -17,13 +17,13 @@ using namespace std;
 
 class Node {
 public:
-    Node(Connector);
+    Node(Connector*);
     virtual ~Node();
 
-private:
-    Connector c;
+protected:
+    Connector* c;
     
-    char* getStr(char* prompt);
+    void getStr(char* key, char* prompt);
     bool validate(int mine, int theirs);
 
 };

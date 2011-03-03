@@ -31,20 +31,24 @@ int main (void) {
         Connector *c = new Connector(PORT);
         switch (role) {
             case 'k':
-                Node_KDC kdc = Node_KDC(*c);
+                Node_KDC kdc = Node_KDC(c);
                 kdc.listen();
-            case 'i':
+                
+            /*case 'i':
                 // initiator:
                 // input ka, send request, recv response from kdc
                 // send encrypted ks to reciever
                 // receive encrypted nonce
                 // send fnonce
+                break;
             case 'r':
                 // receiver:
                 // input kb, receive ks,
                 // send nonce
                 // receive and validate nonce
-
+                break;
+            default:
+                break;*/
         }
 
 
@@ -91,6 +95,8 @@ int main (void) {
                 perror ("incorrect role input");
                 exit (1);
         } */
+
+        delete c;
 
         return 0;
 }
