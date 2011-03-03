@@ -6,7 +6,7 @@ LIBSSHIVA= -lpthread -lsocket -lnsl -lrt
 
 HFILES=	connector.h blowfish.h Node.h Node_KDC.h
 
-CCFILES= $(HFILES:.h=.cpp) *.cpp
+CCFILES= $(HFILES:.h=.cpp) main.cpp f.cpp endian.cpp 
 
 OFILES= $(CCFILES:.cpp=.o)
 

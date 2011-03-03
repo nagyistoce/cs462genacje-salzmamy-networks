@@ -6,7 +6,6 @@
  */
 
 #include "Node.h"
-#include "Connector.h"
 
 #ifndef _NODE_KDC_H
 #define	_NODE_KDC_H

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="69">
+<configurationDescriptor version="62">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -12,18 +12,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>Node.cpp</itemPath>
-      <itemPath>Node.h</itemPath>
-      <itemPath>Node_KDC.cpp</itemPath>
-      <itemPath>Node_KDC.h</itemPath>
-      <itemPath>blowfish.cpp</itemPath>
-      <itemPath>blowfish.h</itemPath>
-      <itemPath>connector.cpp</itemPath>
-      <itemPath>connector.h</itemPath>
-      <itemPath>endian.cpp</itemPath>
-      <itemPath>f.cpp</itemPath>
-      <itemPath>main.cpp</itemPath>
-      <itemPath>makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -40,6 +28,10 @@
         <platform>3</platform>
       </toolsSet>
       <compileType>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
     </conf>
     <conf name="Release" type="1">
@@ -58,6 +50,10 @@
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
     </conf>
   </confs>

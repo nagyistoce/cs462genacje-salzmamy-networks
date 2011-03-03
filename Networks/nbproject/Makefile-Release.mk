@@ -10,15 +10,13 @@
 # Environment
 MKDIR=mkdir
 CP=cp
-GREP=grep
-NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc.exe
-CCC=g++.exe
-CXX=g++.exe
+CC=gcc
+CCC=g++
+CXX=g++
 FC=
-AS=as.exe
+AS=as
 
 # Macros
 CND_PLATFORM=Cygwin-Windows
@@ -33,14 +31,14 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/Node_KDC.o \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/f.o \
 	${OBJECTDIR}/blowfish.o \
 	${OBJECTDIR}/Node.o \
+	${OBJECTDIR}/Node_Receiver.o \
 	${OBJECTDIR}/endian.o \
-	${OBJECTDIR}/connector.o
-
+	${OBJECTDIR}/f.o \
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/connector.o \
+	${OBJECTDIR}/Node_KDC.o
 
 # C Compiler Flags
 CFLAGS=
@@ -60,52 +58,57 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-Release.mk dist/Release/Cygwin-Windows/networks.exe
+	${MAKE}  -f nbproject/Makefile-Release.mk dist/Release/Cygwin-Windows/networks.exe
 
 dist/Release/Cygwin-Windows/networks.exe: ${OBJECTFILES}
 	${MKDIR} -p dist/Release/Cygwin-Windows
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/networks ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/Node_KDC.o: Node_KDC.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_KDC.o Node_KDC.cpp
-
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
-
-${OBJECTDIR}/f.o: f.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/f.o f.cpp
-
-${OBJECTDIR}/blowfish.o: blowfish.cpp 
+${OBJECTDIR}/blowfish.o: nbproject/Makefile-${CND_CONF}.mk blowfish.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/blowfish.o blowfish.cpp
 
-${OBJECTDIR}/Node.o: Node.cpp 
+${OBJECTDIR}/Node.o: nbproject/Makefile-${CND_CONF}.mk Node.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node.o Node.cpp
 
-${OBJECTDIR}/endian.o: endian.cpp 
+${OBJECTDIR}/Node_Receiver.o: nbproject/Makefile-${CND_CONF}.mk Node_Receiver.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_Receiver.o Node_Receiver.cpp
+
+${OBJECTDIR}/endian.o: nbproject/Makefile-${CND_CONF}.mk endian.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/endian.o endian.cpp
 
-${OBJECTDIR}/connector.o: connector.cpp 
+${OBJECTDIR}/f.o: nbproject/Makefile-${CND_CONF}.mk f.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/f.o f.cpp
+
+${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/connector.o: nbproject/Makefile-${CND_CONF}.mk connector.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/connector.o connector.cpp
+
+${OBJECTDIR}/Node_KDC.o: nbproject/Makefile-${CND_CONF}.mk Node_KDC.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_KDC.o Node_KDC.cpp
 
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
-.clean-conf: ${CLEAN_SUBPROJECTS}
+.clean-conf:
 	${RM} -r build/Release
 	${RM} dist/Release/Cygwin-Windows/networks.exe
 
