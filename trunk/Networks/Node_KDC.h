@@ -6,13 +6,14 @@
  */
 
 #include "Node.h"
+#include "Connector.h"
 
 #ifndef _NODE_KDC_H
 #define	_NODE_KDC_H
 
-class Node_KDC : private Node {
+class Node_KDC : public Node {
 public:
-    Node_KDC(Connector c);
+    Node_KDC(Connector* c);
     virtual ~Node_KDC();
 
     void listen();

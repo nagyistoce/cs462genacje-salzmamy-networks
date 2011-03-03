@@ -7,7 +7,7 @@
 
 #include "Node.h"
 
-Node::Node(Connector c) {
+Node::Node(Connector* c) {
 
     this->c = c;
     cout << "Node (parent) constructor called.\n";
@@ -19,16 +19,16 @@ Node::Node(Connector c) {
 Node::~Node() {
 }
 
-char* Node::getStr(char* prompt) {
+void Node::getStr(char* key, char* prompt) {
     cout << prompt << endl;
     
-    char input[128];
+    char input[KEYSIZE];
 
-    cin >> input;
+    cin >> key;
 
-    return input;
 }
-bool validate(int mine, int theirs) {
+
+bool Node::validate(int mine, int theirs) {
 
     if (mine == theirs) {
         return true;
