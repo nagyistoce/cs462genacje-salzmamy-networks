@@ -6,6 +6,7 @@
  */
 
 #include "Node.h"
+#include "blowfish.h"
 
 #ifndef _NODE_KDC_H
 #define	_NODE_KDC_H
@@ -18,11 +19,19 @@ public:
     void listen();
 private:
 
-    void getKeys();
+    /*~protocol methods~*/
+    // called from within listen when a request comes in
 
-    char keyA[56];
-    char keyB[56];
-    char keyS[56];
+    void getKeys(); // gets user input for the 3 keys
+    void sendKDCResponse(); // sends the KDC response from to the initiator
+
+    /*~~~~~~~~~~~~~~~~~~*/
+
+    char nonce[KEYSIZE];
+
+    char keyA[KEYSIZE];
+    char keyB[KEYSIZE];
+    char keyS[KEYSIZE];
 
 };
 

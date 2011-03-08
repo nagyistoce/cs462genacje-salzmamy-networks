@@ -6,7 +6,8 @@
  */
 
 #include "Node_KDC.h"
-#include "connector.h"
+
+
 
 Node_KDC::Node_KDC(Connector *c) : Node(c) {
     
@@ -25,14 +26,19 @@ void Node_KDC::listen() {
     cout << "KDC: Listening...\n";
 
 
-    // if we get a legitimate request,
-    getKeys();
-    /*
-    while(1) {
-    c.listen();
+    
+    
+    //while(1) {
+        //c->listen();
 
-    }
-    */
+        // if we get a legitimate request, get the keys from user input
+        getKeys();
+        // fill nonce variable
+        //strcpy(nonce, ????);
+        sendKDCResponse();
+
+    //}
+    
 
 }
 
@@ -43,7 +49,7 @@ void Node_KDC::getKeys() {
     memset(k, '\0', KEYSIZE); // reset that memory
     
     while (strcmp(k, "") == 0) {
-    Node::getStr(k, "Enter K(a):\n");
+    Node::getStr(k, "Enter K(a):");
     cout << k << " received... " << endl;
     }
     memcpy(keyA, k, KEYSIZE); // copy the key into this variable
@@ -53,7 +59,7 @@ void Node_KDC::getKeys() {
 
     
     while (strcmp(k, "") == 0) {
-    Node::getStr(k, "Enter K(b):\n");
+    Node::getStr(k, "Enter K(b):");
     }
     memcpy(keyB, k, KEYSIZE); // copy the key into this variable
     memset(k, '\0', KEYSIZE); // reset that memory
@@ -62,7 +68,7 @@ void Node_KDC::getKeys() {
 
     
     while (strcmp(k, "") == 0) {
-    Node::getStr(k, "Enter K(s):\n");
+    Node::getStr(k, "Enter K(s):");
     }
     memcpy(keyS, k, KEYSIZE); // copy the key into this variable
     memset(k, '\0', KEYSIZE); // reset that memory
@@ -70,6 +76,32 @@ void Node_KDC::getKeys() {
     cout << "K(s) set to: " << keyS << endl;
     
 
+}
+
+void Node_KDC::sendKDCResponse() {
+
+    // make packet with the items needed
+    // Eka(ks|nonce|Ekb(ks))
+
+    // create last part of msg
+    Blowfish b = Blowfish();
+
+    b.Set_Passwd(keyB);
+    char tempS[64];// must be a multiple of 8 bytes
+    strcpy(tempS, keyS); // copy the contents of keyS into tempS
+    b.Encrypt((void*)tempS, 64); // tempS is now ready to be added to the response
+    
+
+    // set the connector's encryption key to keyA if not done so already
+    c->setKey(keyA);
+
+    char msg[3*KEYSIZE]; // size of the three elements within it
+    strcpy(msg, keyS);  //ks
+    strcat(msg, nonce); //|nonce
+    strcat(msg, tempS); //|Ekb(ks)
+
+    c->send(msg); // send Eka(ks|nonce|Ekb(ks))
+    return;
 }
 
 
