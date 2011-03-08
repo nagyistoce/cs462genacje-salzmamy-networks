@@ -8,7 +8,7 @@
 #ifndef _NODE_H
 #define	_NODE_H
 
-#define KEYSIZE 56 // max blowfish pw length
+//#define KEYSIZE 56 // max blowfish pw length
 
 #include "Connector.h"
 
@@ -23,8 +23,10 @@ public:
 protected:
     Connector* c;
     
+    int KEYSIZE = 56;
+
     void getStr(char* key, char* prompt);
-    bool validate(int mine, int theirs);
+    bool validate(long& mine, long& theirs);
 
 };
 

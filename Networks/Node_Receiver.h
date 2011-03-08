@@ -28,9 +28,10 @@ private:
     // called when the class is initialized; this will ask for the private keyB.
     void getKey();
 
-    char keyB[56];
-    char keyS[56];
-    char nonce2[56];
+    char keyB[KEYSIZE];
+    char keyS[KEYSIZE];
+    long nonce2;
+
 
 };
 

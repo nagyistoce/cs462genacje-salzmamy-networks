@@ -16,7 +16,7 @@ public:
     Node_KDC(Connector* c);
     virtual ~Node_KDC();
 
-    void listen();
+    void listen();//**needs work still**
 private:
 
     /*~protocol methods~*/
@@ -27,7 +27,7 @@ private:
 
     /*~~~~~~~~~~~~~~~~~~*/
 
-    char nonce[KEYSIZE];
+    long nonce;
 
     char keyA[KEYSIZE];
     char keyB[KEYSIZE];
