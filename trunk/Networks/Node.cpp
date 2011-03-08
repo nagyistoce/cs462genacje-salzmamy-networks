@@ -32,10 +32,12 @@ void Node::getStr(char* key, char* prompt) {
 
 }
 
-bool Node::validate(int mine, int theirs) {
+bool Node::validate(long& mine, long& theirs) {
 
     if (mine == theirs) {
         return true;
     } else return false;
 
 }
+
+

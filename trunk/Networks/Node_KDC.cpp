@@ -25,7 +25,7 @@ Node_KDC::~Node_KDC(){
 void Node_KDC::listen() {
     cout << "KDC: Listening...\n";
 
-
+    /*TODO: finish this method*/
     
     
     //while(1) {
@@ -81,7 +81,7 @@ void Node_KDC::getKeys() {
 void Node_KDC::sendKDCResponse() {
 
     // make packet with the items needed
-    // Eka(ks|nonce|Ekb(ks))
+    // Eka(nonce|ks|Ekb(ks))
 
     // create last part of msg
     Blowfish b = Blowfish();
@@ -95,12 +95,12 @@ void Node_KDC::sendKDCResponse() {
     // set the connector's encryption key to keyA if not done so already
     c->setKey(keyA);
 
-    char msg[3*KEYSIZE]; // size of the three elements within it
-    strcpy(msg, keyS);  //ks
-    strcat(msg, nonce); //|nonce
+    char msg[sizeof(long)+2*KEYSIZE]; // size of the three elements within it
+    memcpy(msg, &nonce, sizeof(long)); //nonce
+    strcat(msg, keyS);  //|ks
     strcat(msg, tempS); //|Ekb(ks)
 
-    c->send(msg); // send Eka(ks|nonce|Ekb(ks))
+    c->send(msg); // send Eka(nonce|ks|Ekb(ks))
     return;
 }
 
