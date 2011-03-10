@@ -58,9 +58,6 @@ int main (void) {
 
         if (role == 'l') {
 
-
-
-
                 
                 c->setKey("31337");
                 while (1) {
