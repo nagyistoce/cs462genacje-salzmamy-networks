@@ -19,7 +19,7 @@
 
 #include "blowfish.h"
 
-#define MAXBUFLEN 128
+#define MAXBUFLEN 1024
 
 using namespace std;
 
@@ -40,12 +40,14 @@ public:
     void setMsgSize(int);
     int getMsgSize();
     void setKey(char*);
+    void clearBuf();
+
 private:
     int msgSize;// can set to something different later if we want...
     Blowfish key;
     int sockfd;
     struct sockaddr_in my_addr; // my address information
-    struct sockaddr_in their_addr; // connector�s address information
+    struct sockaddr_in * their_addr; // connector's address information
     int addr_len, numbytes;
     char buf[MAXBUFLEN];
     struct hostent * he;

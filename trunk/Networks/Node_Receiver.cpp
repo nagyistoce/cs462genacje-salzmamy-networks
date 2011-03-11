@@ -25,7 +25,7 @@ void Node_Receiver::listen() {
         //if legitimate request received, send Eks(n2)
     //strcpy(keyS, ????);
     c->setKey(keyS);
-    getNonce();
+    getNonce((long int*)&nonce2);
     char nonce[4];
     memcpy(nonce, &nonce2, 4);
     c->send(nonce);
@@ -43,13 +43,7 @@ void Node_Receiver::getKey() {
     getStr(keyB, "Enter K(b):");
 }
 
-void Node_Receiver::getNonce() {
 
-    cout << "Please enter a nonce." << endl;
-    cin.ignore(2048, '\n');
-    cin >>nonce2;
-
-}
 
 
 
