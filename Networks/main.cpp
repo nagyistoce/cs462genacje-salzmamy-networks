@@ -74,8 +74,11 @@ int main (void) {
                 cout << "Talker: Enter messages to encrypt and send...\n"
                 << "Listener set to: " << CLARK << endl;
 
-
-                char msg[c->getMsgSize()];
+                char msg2[128];
+                strcpy(msg2, "(initializer)");
+                c->send(msg2);
+                //c->clearBuf();
+                char msg[128];
                 bool quit = false;
                 while(!quit) {
                     // flush input stream

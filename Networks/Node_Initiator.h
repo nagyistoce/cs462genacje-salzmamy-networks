@@ -12,11 +12,11 @@
 
 class Node_Initiator : public Node {
 public:
-    Node_Initiator(Connector c);
+    Node_Initiator(Connector* c);
     virtual ~Node_Initiator();
+
+    void sendRequest();
 private:
-
-
 
     long nonce;
     char keyA[KEYSIZE];

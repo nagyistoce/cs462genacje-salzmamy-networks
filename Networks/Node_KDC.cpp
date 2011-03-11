@@ -13,6 +13,8 @@ Node_KDC::Node_KDC(Connector *c) : Node(c) {
     
     // calls super class
     cout << "Node_KDC (child) constructor...\n";
+    getKeys();
+    c->setKey(keyA);
 }
 
 
@@ -26,18 +28,28 @@ void Node_KDC::listen() {
     cout << "KDC: Listening...\n";
 
     /*TODO: finish this method*/
+    c->listen();
+    c->clearBuf();
     
-    
-    //while(1) {
-        //c->listen();
-
+    while(1) {
+        c->listen();
+        cout << "Received: " << c->getMsg() << endl;
         // if we get a legitimate request, get the keys from user input
-        getKeys();
+        char k[KEYSIZE];
+        memset(k, '\0', KEYSIZE); // reset that memory
+        while (strcmp(k, "") == 0) {
+            Node::getStr(k, "Enter K(s):");
+        }
+        memcpy(keyS, k, KEYSIZE); // copy the key into this variable
+        
+
+        cout << "K(s) set to: " << keyS << endl;
         // fill nonce variable
-        //strcpy(nonce, ????);
+        memcpy(&nonce, c->getMsg(), 4); // nonce will be the first 4 bytes (long *)
+        
         sendKDCResponse();
 
-    //}
+    }
     
 
 }
@@ -67,13 +79,7 @@ void Node_KDC::getKeys() {
     cout << "K(b) set to: " << keyB << endl;
 
     
-    while (strcmp(k, "") == 0) {
-    Node::getStr(k, "Enter K(s):");
-    }
-    memcpy(keyS, k, KEYSIZE); // copy the key into this variable
-    memset(k, '\0', KEYSIZE); // reset that memory
-
-    cout << "K(s) set to: " << keyS << endl;
+    
     
 
 }

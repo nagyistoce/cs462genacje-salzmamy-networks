@@ -21,7 +21,7 @@ private:
     /*~protocol methods~*/
     // called from within listen when a request comes in
 
-    void getNonce();
+    
 
     /*~~~~~~~~~~~~~~~~~~*/
 

@@ -8,7 +8,7 @@
 #include "Node.h"
 
 Node::Node(Connector* c) {
-
+    
     this->c = c;
     cout << "Node (parent) constructor called.\n";
     
@@ -20,6 +20,7 @@ Node::~Node() {
 }
 
 void Node::getStr(char* key, char* prompt) {
+
     cout << prompt << endl;
     
     char input[KEYSIZE];
@@ -29,6 +30,16 @@ void Node::getStr(char* key, char* prompt) {
     cin.get(input, KEYSIZE);
 
     memcpy((void*)key, (void*)input, KEYSIZE);
+
+}
+
+void Node::getNonce(long* nonce) {
+
+
+    cout << "Please enter a nonce." << endl;
+    cin.ignore(2048, '\n');
+    cin >>*nonce;
+
 
 }
 
