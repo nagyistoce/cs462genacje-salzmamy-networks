@@ -24,7 +24,7 @@ protected:
     Connector* c;
     
 
-    void getStr(char* key, char* prompt);
+    void getStr(char* strToGet, int size, char* prompt);
     void getNonce(long* nonce);
     bool validate(long& mine, long& theirs);
 

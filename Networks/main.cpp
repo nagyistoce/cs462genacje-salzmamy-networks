@@ -59,10 +59,10 @@ int main (void) {
         if (role == 'l') {
 
                 
-                c->setKey("31337");
+                c->set_key("31337");
                 while (1) {
                     c->listen();
-                    char* msg = c->getMsg();
+                    char* msg = c->get_msg();
                     c->send("ack");
 
                 }
@@ -70,14 +70,11 @@ int main (void) {
         } else if (role == 't') {
                 // hard coded to the listener for now...
                 Connector* c = new Connector(CLARK, PORT);
-                c->setKey("31337");
+                c->set_key("31337");
                 cout << "Talker: Enter messages to encrypt and send...\n"
                 << "Listener set to: " << CLARK << endl;
 
-                char msg2[128];
-                strcpy(msg2, "(initializer)");
-                c->send(msg2);
-                //c->clearBuf();
+                
                 char msg[128];
                 bool quit = false;
                 while(!quit) {
@@ -92,7 +89,7 @@ int main (void) {
                     }
                     c->send(msg);
                     c->listen();
-                    cout << c->getMsg() << endl;
+                    cout << c->get_msg() << endl;
                 }
 
 

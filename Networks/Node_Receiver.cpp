@@ -24,7 +24,7 @@ void Node_Receiver::listen() {
 
         //if legitimate request received, send Eks(n2)
     //strcpy(keyS, ????);
-    c->setKey(keyS);
+    c->set_key(keyS);
     getNonce((long int*)&nonce2);
     char nonce[4];
     memcpy(nonce, &nonce2, 4);
@@ -40,7 +40,7 @@ void Node_Receiver::listen() {
 }
 
 void Node_Receiver::getKey() {
-    getStr(keyB, "Enter K(b):");
+    getStr(keyB, KEYSIZE, "Enter K(b):");
 }
 
 

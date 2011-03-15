@@ -19,17 +19,17 @@ Node::Node(Connector* c) {
 Node::~Node() {
 }
 
-void Node::getStr(char* key, char* prompt) {
+void Node::getStr(char* strToGet, int size, char* prompt) {
 
     cout << prompt << endl;
     
-    char input[KEYSIZE];
+    char input[size];
 
-    cin.ignore(KEYSIZE, '\n');
+    cin.ignore(size, '\n');
     // make sure cin gets the whole thing
-    cin.get(input, KEYSIZE);
+    cin.get(input, size);
 
-    memcpy((void*)key, (void*)input, KEYSIZE);
+    memcpy((void*)strToGet, (void*)input, size);
 
 }
 

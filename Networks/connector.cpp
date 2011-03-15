@@ -1,127 +1,120 @@
-/*
- * connector.cpp
- *
- *  Created on: Feb 15, 2011
- *      Author: salzmamy
- */
-
 #include "connector.h"
-#include "blowfish.h"
 
-/* Used to be able to listen to a port */
-Connector :: Connector (int port) {
-    key = Blowfish();
-    msgSize = 1024;
-    addr_len = 0;
-    numbytes = 0;
-    buf [MAXBUFLEN];
-    their_addr = new struct sockaddr_in;
-
-    my_addr.sin_family = AF_INET; // host byte order
-    my_addr.sin_port = htons(port); // short, network byte order
-    my_addr.sin_addr.s_addr = INADDR_ANY; // automatically fill with my IP
-    memset(&(my_addr.sin_zero), '\0', 8); // zero the rest of the struct
-
-    if ((sockfd = socket (AF_INET, SOCK_DGRAM, 0)) == -1) {
-            perror("socket");
-            exit(1);
-    }
-
-    if (bind (sockfd, (struct sockaddr *) & my_addr, sizeof (struct sockaddr)) == -1) {
-            perror("bind");
-            exit(1);
-    }
+Connector :: Connector () {
+	cout << "default constructor called\n";
 }
 
-/* Used to be able to send a message to addr on port */
-Connector :: Connector (string addr, int port) {
-    key = Blowfish();
-    msgSize = 1024;
-    int addr_len = 0;
-    int numbytes = 0;
-    buf[MAXBUFLEN];
+Connector :: Connector (int port_num) {
+	addr_len = sizeof (struct sockaddr);
+	numbytes = 0;
+	port = port_num;
+	he = NULL;
+	key = new Blowfish ();
+	msg_size = 1024;
+        buf = new char[msg_size];
 
-    if ((he = gethostbyname (addr.c_str())) == NULL) { // get the host info
-                    perror ("gethostbyname");
-                    exit (1);
-    }
+	my_addr.sin_family = AF_INET; // host byte order
+	my_addr.sin_port = htons (port); // short, network byte order
+	my_addr.sin_addr.s_addr = INADDR_ANY; // automatically fill with my IP
+	memset (& (my_addr.sin_zero), '\0', 8); // zero the rest of the struct
 
-    my_addr.sin_family = AF_INET; // host byte order
-    my_addr.sin_port = htons(port); // short, network byte order
-    my_addr.sin_addr.s_addr = INADDR_ANY; // automatically fill with my IP
-    memset(&(my_addr.sin_zero), '\0', 8); // zero the rest of the struct
+	if ((sockfd = socket (AF_INET, SOCK_DGRAM, 0)) == -1) {
+		perror ("socket");
+		exit (1);
+	}
 
-    their_addr = new struct sockaddr_in;
-    their_addr->sin_family = AF_INET; // host byte order
-    their_addr->sin_port = htons (port); // short, network byte order
-    their_addr->sin_addr = * ((struct in_addr *) he -> h_addr);
-    memset (& (their_addr->sin_zero), '\0',  8); // zero the rest of the struct
+	if (bind (sockfd, (struct sockaddr *) & my_addr, sizeof (struct sockaddr)) == -1) {
+		perror ("bind");
+		exit (1);
+	}
 
-    if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
-            perror ("socket");
-            exit (1);
-    }
+}
+
+
+
+Connector :: Connector (char * receiver, int port_num) {
+	numbytes = 0;
+	port = port_num;
+	addr_len = sizeof (struct sockaddr);
+	key = new Blowfish ();
+	msg_size = 1024;
+        buf = new char[msg_size];
+        
+	my_addr.sin_family = AF_INET; // host byte order
+	my_addr.sin_port = htons(port); // short, network byte order
+	my_addr.sin_addr.s_addr = INADDR_ANY; // automatically fill with my IP
+	memset(&(my_addr.sin_zero), '\0', 8); // zero the rest of the struct
+
+	if ((he = gethostbyname (receiver)) == NULL) { // get the host info
+			perror ("gethostbyname");
+			exit(1);
+		}
+
+	their_addr.sin_family = AF_INET; // host byte order
+	their_addr.sin_port = htons (port); // short, network byte order
+	their_addr.sin_addr = *((struct in_addr *) he -> h_addr);
+	memset (& (their_addr.sin_zero), '\0',  8); // zero the rest of the struct
+
+	if ((sockfd = socket (AF_INET, SOCK_DGRAM, 0)) == -1) {
+		perror ("socket");
+		exit (1);
+	}
 }
 
 Connector :: ~Connector () {
 	close (sockfd);
-	delete their_addr;
+	delete (key);
+        delete [] buf;
 }
 
-/* Sends msg to specified addr on port */
-void Connector :: send (char* msg) {
-    cout << "Original message: " << msg << endl;
-    key.Encrypt((void*)msg, msgSize);
-
-    if ((numbytes = sendto (sockfd, (void *) msg, strlen(msg), 0, (struct sockaddr *) their_addr, sizeof (struct sockaddr))) == -1) {
-            perror("send failed:");
-            exit(1);
-    }
-
-
-    cout << "Encrypted message sent: " << msg << endl;
-}
-
-/* Listens to port for incoming messages - blocks */
 void Connector :: listen () {
 
-    if ((numbytes = recvfrom(sockfd, buf, msgSize - 1, 0, (struct sockaddr *) their_addr, (socklen_t *) & addr_len)) == -1) {
-            perror("receive failed:");
-            exit(1);
-    }
+	if ((numbytes = recvfrom (sockfd, buf, MAXBUFLEN - 1, 0, (struct sockaddr *) & their_addr, (socklen_t *) & addr_len)) == -1) {
+		perror ("recvfrom");
+		exit (1);
+	}
 
-    cout << "Encrypted mesasge received: " << buf << endl;
-    key.Decrypt((void*)buf, msgSize);
+	cout << "Before decrypting: " << buf << endl;
+	key -> Decrypt((void *) buf, msg_size);
+	cout << "After decrypting: " << buf << endl;
+	buf [numbytes] = '\0';
 
-    cout << "Encrypted message received from: " << inet_ntoa(their_addr->sin_addr) << endl;
-
-    char dumb = ' ';
-    if (!strcmp(buf, "\n")) {
-    	buf[0] = dumb;
-    }
-
-    buf[numbytes] = '\0';
-    cout << "Decrypted mesasge: " << buf << endl;
+	printf ("got packet from %s\n", inet_ntoa (their_addr.sin_addr));
+	printf ("packet is %d bytes long\n", numbytes);
+//	printf ("packet contains \"%s\"\n", buf);
 }
 
-char* Connector::getMsg() {
+void Connector :: send (char * msg) {
+	char msg_copy [msg_size];
+	memcpy (msg_copy, msg, msg_size);
 
-    return (char*) buf;
+	cout << "Unencrypted message to send: " << msg_copy << endl;
+	key -> Encrypt((void *) msg_copy, msg_size);
+	cout << "Encrypted message to send: " << msg_copy << endl;
+
+	if ((numbytes = sendto(sockfd, msg_copy, strlen(msg_copy), 0, (struct sockaddr *) & their_addr, sizeof (struct sockaddr))) == -1) {
+		perror("sendto");
+		exit(1);
+	}
 }
 
-void Connector::clearBuf(){
-    memset(buf, '\0', msgSize);
+char * Connector :: get_msg () {
+		return buf;
 }
 
-void Connector::setMsgSize(int size) {
-    msgSize = size;
+void Connector :: set_key (char * passwd) {
+	key -> Set_Passwd(passwd);
 }
 
-int Connector::getMsgSize() {
-    return msgSize;
+void Connector :: set_msg_size (int size) {
+    char buf_tmp[msg_size];
+    memcpy(buf_tmp, buf, msg_size);
+    msg_size = size;
+    delete [] buf;
+    buf = new char[msg_size];
+    memcpy(buf, buf_tmp, msg_size);
 }
 
-void Connector::setKey(char* key) {
-    this->key.Set_Passwd(key);
-    cout << "Encryption key set.\n";
+int Connector :: get_msg_size () {
+	return msg_size;
 }

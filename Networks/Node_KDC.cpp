@@ -14,7 +14,7 @@ Node_KDC::Node_KDC(Connector *c) : Node(c) {
     // calls super class
     cout << "Node_KDC (child) constructor...\n";
     getKeys();
-    c->setKey(keyA);
+    c->set_key(keyA); // prepare to talk to the receiver.
 }
 
 
@@ -28,24 +28,23 @@ void Node_KDC::listen() {
     cout << "KDC: Listening...\n";
 
     /*TODO: finish this method*/
-    c->listen();
-    c->clearBuf();
+    
     
     while(1) {
         c->listen();
-        cout << "Received: " << c->getMsg() << endl;
+        cout << "Received: " << c->get_msg() << endl;
         // if we get a legitimate request, get the keys from user input
         char k[KEYSIZE];
         memset(k, '\0', KEYSIZE); // reset that memory
         while (strcmp(k, "") == 0) {
-            Node::getStr(k, "Enter K(s):");
+            Node::getStr(k, KEYSIZE, "Enter K(s):");
         }
         memcpy(keyS, k, KEYSIZE); // copy the key into this variable
         
 
         cout << "K(s) set to: " << keyS << endl;
         // fill nonce variable
-        memcpy(&nonce, c->getMsg(), 4); // nonce will be the first 4 bytes (long *)
+        memcpy(&nonce, c->get_msg(), 4); // nonce will be the first 4 bytes (long *)
         
         sendKDCResponse();
 
@@ -61,8 +60,7 @@ void Node_KDC::getKeys() {
     memset(k, '\0', KEYSIZE); // reset that memory
     
     while (strcmp(k, "") == 0) {
-    Node::getStr(k, "Enter K(a):");
-    cout << k << " received... " << endl;
+        Node::getStr(k, KEYSIZE, "Enter K(a):");
     }
     memcpy(keyA, k, KEYSIZE); // copy the key into this variable
     memset(k, '\0', KEYSIZE); // reset that memory
@@ -71,7 +69,7 @@ void Node_KDC::getKeys() {
 
     
     while (strcmp(k, "") == 0) {
-    Node::getStr(k, "Enter K(b):");
+        Node::getStr(k, KEYSIZE, "Enter K(b):");
     }
     memcpy(keyB, k, KEYSIZE); // copy the key into this variable
     memset(k, '\0', KEYSIZE); // reset that memory
@@ -99,7 +97,7 @@ void Node_KDC::sendKDCResponse() {
     
 
     // set the connector's encryption key to keyA if not done so already
-    c->setKey(keyA);
+    c->set_key(keyA);
 
     char msg[sizeof(long)+2*KEYSIZE]; // size of the three elements within it
     memcpy(msg, &nonce, sizeof(long)); //nonce
