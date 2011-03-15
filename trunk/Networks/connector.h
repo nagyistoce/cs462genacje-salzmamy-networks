@@ -1,11 +1,13 @@
 /*
  * connector.h
  *
- *  Created on: Feb 15, 2011
+ *  Created on: Mar 10, 2011
  *      Author: salzmamy
  */
 
-#include <iostream>
+#ifndef CONNECTOR_H_
+#define CONNECTOR_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -16,40 +18,39 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-
+#include <iostream>
 #include "blowfish.h"
-
-#define MAXBUFLEN 1024
 
 using namespace std;
 
-#ifndef CONNECTOR_H_
-#define CONNECTOR_H_
+#define MAXBUFLEN 100
 
 class Connector {
 
 public:
-    Connector ();
-    Connector (int);
-    Connector (string, int);
-    ~Connector ();
+	Connector ();
+	Connector (int);  // constructor that sets up a listening port right away
+	Connector (char *, int); // allows sending of messages right away (and listening)
+	~Connector ();
 
-    void send (char*);
-    void listen();
-    char* getMsg();
-    void setMsgSize(int);
-    int getMsgSize();
-    void setKey(char*);
-    void clearBuf();
+	void send (char *);
+	void listen ();
+	char * get_msg ();
+	void set_key (char *);
+	void set_msg_size (int);
+	int get_msg_size ();
 
 private:
-    int msgSize;// can set to something different later if we want...
-    Blowfish key;
-    int sockfd;
-    struct sockaddr_in my_addr; // my address information
-    struct sockaddr_in * their_addr; // connector's address information
-    int addr_len, numbytes;
-    char buf[MAXBUFLEN];
-    struct hostent * he;
+	Blowfish * key;
+	struct sockaddr_in their_addr; // connector�s address information
+	struct sockaddr_in my_addr; // my address information
+	int sockfd;
+	int numbytes;
+	int port;
+	int addr_len;
+	int msg_size;
+	struct hostent * he;
+	char *buf;
 };
+
 #endif /* CONNECTOR_H_ */

@@ -18,6 +18,9 @@ public:
     void sendRequest();
 private:
 
+    char kdcURL[128];
+    char receiverURL[128];
+
     long nonce;
     char keyA[KEYSIZE];
     char keyS[KEYSIZE];

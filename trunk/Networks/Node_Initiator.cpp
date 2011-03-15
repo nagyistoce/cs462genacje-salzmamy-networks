@@ -9,6 +9,11 @@
 
 Node_Initiator::Node_Initiator(Connector* c) : Node(c) {
     cout << "Node_Initiator (child) constructor." << endl;
+
+    cout << "Enter the url of the KDC: " << endl;
+
+    
+
 }
 
 
@@ -20,6 +25,7 @@ void Node_Initiator::sendRequest() {
     getNonce(&nonce);
     char msg[128];
 
+    
 
     return;
 }
