@@ -10,9 +10,12 @@
 Node_Initiator::Node_Initiator(Connector* c) : Node(c) {
     cout << "Node_Initiator (child) constructor." << endl;
 
-    cout << "Enter the url of the KDC: " << endl;
-
     
+
+    //getStr(kdcURL, 128, "Enter the url of the KDC: \n");
+    getStr(keyA, KEYSIZE, "Enter Ka: \n");
+
+    c->set_key(keyA);
 
 }
 
@@ -25,7 +28,14 @@ void Node_Initiator::sendRequest() {
     getNonce(&nonce);
     char msg[128];
 
-    
+    // copy the nonce into the request
+    memcpy(msg,&nonce, 4);
+    char* request = "Requesting session key...";
+    memcpy(&msg[4], request, strlen(request));
+
+    // [ nonc |           string              ]
+
+    c->send(msg);
 
     return;
 }
@@ -42,8 +52,22 @@ void Node_Initiator::getKDCResponse() {
 
     char* msg = c->get_msg();
 
-    
+    long checkNonce = 0;
+    memcpy(&checkNonce, msg, 4);
 
+    if (validate(checkNonce, nonce)) {
+        cout << "Nonce: " << nonce << " validated!" << endl;
+    } else {
+        cout << "Nonce validation failed... " << endl
+                << "Sent: " << nonce << endl
+                << "Received: " << checkNonce << endl;
+        exit(1);
+    }
+
+    cout << "Now forward EKb(Ks) to Receiver..." << endl;
+
+    
+    return;
 }
 
 

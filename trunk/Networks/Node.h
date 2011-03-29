@@ -19,12 +19,12 @@ class Node {
 public:
     Node(Connector*);
     virtual ~Node();
-
+    static void getStr(char* strToGet, int size, char* prompt);
 protected:
     Connector* c;
     
 
-    void getStr(char* strToGet, int size, char* prompt);
+    
     void getNonce(long* nonce);
     bool validate(long& mine, long& theirs);
 
