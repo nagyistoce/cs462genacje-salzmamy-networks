@@ -76,9 +76,7 @@ void Node_KDC::getKeys() {
 
     cout << "K(b) set to: " << keyB << endl;
 
-    
-    
-    
+ 
 
 }
 
@@ -99,7 +97,7 @@ void Node_KDC::sendKDCResponse() {
     // set the connector's encryption key to keyA if not done so already
     c->set_key(keyA);
 
-    char msg[sizeof(long)+2*KEYSIZE]; // size of the three elements within it
+    char msg[sizeof(long)+KEYSIZE+strlen(tempS)]; // size of the three elements within it
     memcpy(msg, &nonce, sizeof(long)); //nonce
     strcat(msg, keyS);  //|ks
     strcat(msg, tempS); //|Ekb(ks)

@@ -16,6 +16,7 @@ public:
     virtual ~Node_Initiator();
 
     void sendRequest();
+    void getKDCResponse();
 private:
 
     char kdcURL[128];
