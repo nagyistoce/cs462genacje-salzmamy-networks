@@ -1,4 +1,4 @@
-
+// PRNG f function provided by Dr. Jack Tan
 
 #include <iostream>
 
