@@ -30,5 +30,21 @@ void Node_Initiator::sendRequest() {
     return;
 }
 
+void Node_Initiator::getKDCResponse() {
+
+    // KDC response will be in the format:
+    // bytes 0-3 = nonce (4 bytes)
+    // bytes 4-59 = keyS (56 bytes)
+    // bytes 60-123 = Ekb(keyS) (64 bytes)
+    // = 124 bytes total
+
+    c->listen();
+
+    char* msg = c->get_msg();
+
+    
+
+}
+
 
 

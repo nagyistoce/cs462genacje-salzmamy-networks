@@ -35,12 +35,16 @@ int main (void) {
         if (role == 'k') {
                 Node_KDC kdc = Node_KDC(c);
                 kdc.listen();
+                
         } else if (role == 'i') {
             // initiator:
             // input ka, send request, recv response from kdc
             // send encrypted ks to reciever
             // receive encrypted nonce
             // send fnonce
+
+
+            // get file name
 
             // sendFile
 
