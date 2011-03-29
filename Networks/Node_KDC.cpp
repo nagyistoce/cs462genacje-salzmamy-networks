@@ -15,6 +15,7 @@ Node_KDC::Node_KDC(Connector *c) : Node(c) {
     cout << "Node_KDC (child) constructor...\n";
     getKeys();
     c->set_key(keyA); // prepare to talk to the receiver.
+    nonce = 0;
 }
 
 
@@ -44,7 +45,10 @@ void Node_KDC::listen() {
 
         cout << "K(s) set to: " << keyS << endl;
         // fill nonce variable
-        memcpy(&nonce, c->get_msg(), 4); // nonce will be the first 4 bytes (long *)
+        // nonce will be the first 4 bytes (long *)
+        memcpy(&nonce, c->get_msg(), 4);
+
+        cout << "Nonce received: " << nonce << endl;
         
         sendKDCResponse();
 
@@ -90,6 +94,8 @@ void Node_KDC::sendKDCResponse() {
 
     b.Set_Passwd(keyB);
     char tempS[64];// must be a multiple of 8 bytes
+    memset(tempS, '\0', 64);
+
     strcpy(tempS, keyS); // copy the contents of keyS into tempS
     b.Encrypt((void*)tempS, 64); // tempS is now ready to be added to the response
     
@@ -97,10 +103,14 @@ void Node_KDC::sendKDCResponse() {
     // set the connector's encryption key to keyA if not done so already
     c->set_key(keyA);
 
-    char msg[sizeof(long)+KEYSIZE+strlen(tempS)]; // size of the three elements within it
+    char msg[sizeof(long)+KEYSIZE+strlen(tempS)];
+    memset(msg, '\0', sizeof(long)+KEYSIZE+strlen(tempS));
+    
+    // size of the three elements within it
+    
     memcpy(msg, &nonce, sizeof(long)); //nonce
-    strcat(msg, keyS);  //|ks
-    strcat(msg, tempS); //|Ekb(ks)
+    memcpy(&msg[4], keyS, KEYSIZE);  //|ks
+    memcpy(&msg[60], tempS, strlen(tempS)); //|Ekb(ks)
 
     c->send(msg); // send Eka(nonce|ks|Ekb(ks))
     return;

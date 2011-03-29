@@ -19,7 +19,7 @@ public:
     void getKDCResponse();
 private:
 
-    char kdcURL[128];
+    // char kdcURL[128];
     char receiverURL[128];
 
     long nonce;

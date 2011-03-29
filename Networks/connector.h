@@ -23,7 +23,7 @@
 
 using namespace std;
 
-#define MAXBUFLEN 100
+//#define MAXBUFLEN (1024*1024)
 
 class Connector {
 

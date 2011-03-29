@@ -11,6 +11,7 @@
 #include "connector.h"
 #include "Node.h"
 #include "Node_KDC.h"
+#include "Node_Initiator.h"
 
 #define PORT 9001
 #define ANDY "andy.cs.uwec.edu"
@@ -29,16 +30,29 @@ int main (void) {
         // Node kdc = Node_KDC(c);
         // kdc.listen();
 
-        Connector *c = new Connector(PORT);
+        Connector *c;
         
         
         if (role == 'k') {
-                Node_KDC kdc = Node_KDC(c);
-                kdc.listen();
+            c = new Connector(PORT); // listening constructor
+            Node_KDC kdc = Node_KDC(c);
+            kdc.listen();
                 
         } else if (role == 'i') {
             // initiator:
-            // input ka, send request, recv response from kdc
+
+            // send request, recv response from kdc
+            
+            // get KDC URL
+            char kdc[128];
+            Node::getStr(kdc, 128, "Enter the KDC URL: \n");
+            c = new Connector(kdc, PORT);
+
+            Node_Initiator ini = Node_Initiator(c);
+
+            ini.sendRequest();
+            ini.getKDCResponse();
+
             // send encrypted ks to reciever
             // receive encrypted nonce
             // send fnonce
