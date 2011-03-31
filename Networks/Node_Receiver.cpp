@@ -44,6 +44,12 @@ void Node_Receiver::validateConnection() {
     memcpy(n, &nonce2, 4);
     
     c->send(n);
+
+    cout << "Sent nonce: " << nonce2 << endl;
+
+    c->listen();
+
+    char n2f[4]
     
 }
 
