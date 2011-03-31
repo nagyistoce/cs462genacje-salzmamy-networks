@@ -98,6 +98,19 @@ void Connector :: send (char * msg) {
 	}
 }
 
+void Connector :: send_unencrypted (char * msg) {
+	char msg_copy [msg_size];
+	memcpy (msg_copy, msg, msg_size);
+
+	cout << "Unencrypted message to send: " << msg_copy << endl;
+
+
+	if ((numbytes = sendto(sockfd, msg_copy, strlen(msg_copy), 0, (struct sockaddr *) & their_addr, sizeof (struct sockaddr))) == -1) {
+		perror("sendto");
+		exit(1);
+	}
+}
+
 char * Connector :: get_msg () {
 		return buf;
 }

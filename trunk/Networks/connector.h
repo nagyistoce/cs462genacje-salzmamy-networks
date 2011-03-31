@@ -34,6 +34,8 @@ public:
 	~Connector ();
 
 	void send (char *);
+        void send_unencrypted(char*);
+
 	void listen ();
 	char * get_msg ();
 	void set_key (char *);

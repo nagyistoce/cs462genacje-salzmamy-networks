@@ -41,19 +41,32 @@ int main (void) {
         } else if (role == 'i') {
             // initiator:
 
-            // send request, recv response from kdc
+            
             
             // get KDC URL
             char kdc[128];
-            Node::getStr(kdc, 128, "Enter the KDC URL: \n");
+            memset(kdc, '\0', 128);
+            Node::getStr(kdc, 128, "Enter the KDC URL:");
             c = new Connector(kdc, PORT);
 
             Node_Initiator ini = Node_Initiator(c);
 
+            // send request, receive response from kdc
             ini.sendRequest();
             ini.getKDCResponse();
+            
+            
+            // set up connection with receiver
+            char recv[128];
+            memset(recv, '\0', 128);
+            Node::getStr(recv, 128, "Enter the receiver URL:");
+            c = new Connector(recv, PORT);
+            ini.newConnector(c);
 
             // send encrypted ks to reciever
+            ini.sendSessionKey();
+
+
             // receive encrypted nonce
             // send fnonce
 
@@ -64,6 +77,10 @@ int main (void) {
 
         } else if (role == 'r') {
             // receiver:
+            c = new Connector(PORT); // listening constructor
+            Node_Receiver rec = Node_Receiver(c);
+            rec.listen();
+            
             // input kb, receive ks,
             // send nonce
             // receive and validate nonce
@@ -124,7 +141,7 @@ int main (void) {
 char ask_role () {
         char role;
 
-        cout << "What role are you?  k - KDC :: l - listener : t - talker\n";
+        cout << "What role are you?  k - KDC : i - Initiator :: l - listener : t - talker\n";
         cin >> role;
 
         return role;

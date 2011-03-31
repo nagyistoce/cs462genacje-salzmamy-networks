@@ -12,6 +12,21 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Node.cpp</itemPath>
+      <itemPath>Node.h</itemPath>
+      <itemPath>Node_Initiator.cpp</itemPath>
+      <itemPath>Node_Initiator.h</itemPath>
+      <itemPath>Node_KDC.cpp</itemPath>
+      <itemPath>Node_KDC.h</itemPath>
+      <itemPath>Node_Receiver.cpp</itemPath>
+      <itemPath>Node_Receiver.h</itemPath>
+      <itemPath>blowfish.cpp</itemPath>
+      <itemPath>blowfish.h</itemPath>
+      <itemPath>connector.cpp</itemPath>
+      <itemPath>connector.h</itemPath>
+      <itemPath>endian.cpp</itemPath>
+      <itemPath>f.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
