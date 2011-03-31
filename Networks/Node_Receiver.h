@@ -19,14 +19,14 @@ public:
 private:
 
     /*~protocol methods~*/
-    // called from within listen when a request comes in
-
+    // called from within listen
+    // when a request comes in
+    void validateConnection(); // sends a nonce, then validates it
     
 
     /*~~~~~~~~~~~~~~~~~~*/
 
-    // called when the class is initialized; this will ask for the private keyB.
-    void getKey();
+    
 
     char keyB[KEYSIZE];
     char keyS[KEYSIZE];

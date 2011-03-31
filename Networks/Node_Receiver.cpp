@@ -9,7 +9,8 @@
 
 Node_Receiver::Node_Receiver(Connector* c) : Node(c){
     cout << "Node_Receiver (child class) constructor called." << endl;
-    getKey();
+    
+    getStr(keyB, KEYSIZE, "Enter K(b):");
 }
 
 Node_Receiver::~Node_Receiver() {
@@ -17,31 +18,35 @@ Node_Receiver::~Node_Receiver() {
 
 void Node_Receiver::listen() {
 
+    c->listen();
 
-    //while(1) {
+    char msg[64];
+    memset(msg, '\0', 64);
+    memcpy(msg, c->get_msg(), 64);
 
-    //c->listen(); // listen for dgrams
+    strcpy(keyS, msg);
 
-        //if legitimate request received, send Eks(n2)
-    //strcpy(keyS, ????);
+    cout << "Received Ks: " << keyS << endl;
+
+    validateConnection();
+
+}
+
+void Node_Receiver::validateConnection() {
+    
     c->set_key(keyS);
-    getNonce((long int*)&nonce2);
-    char nonce[4];
-    memcpy(nonce, &nonce2, 4);
-    c->send(nonce);
+    cout << "Session key set! Handshaking..." << endl;
 
-    //c->listen(); // listen for the response of Eks(f(n2))
-    //long receivedNonce2 = ????;
-    //validate(&nonce2, &receivedNonce2);
-
-    // ready to receive the file now :)
-
-    //}
+    getNonce(&nonce2);
+    
+    char n[4];
+    memset(n, '\0', 4);
+    memcpy(n, &nonce2, 4);
+    
+    c->send(n);
+    
 }
 
-void Node_Receiver::getKey() {
-    getStr(keyB, KEYSIZE, "Enter K(b):");
-}
 
 
 

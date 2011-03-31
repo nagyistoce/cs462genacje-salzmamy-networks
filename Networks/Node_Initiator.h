@@ -17,6 +17,8 @@ public:
 
     void sendRequest();
     void getKDCResponse();
+
+    void sendSessionKey();
 private:
 
     // char kdcURL[128];
@@ -24,6 +26,7 @@ private:
 
     long nonce;
     char keyA[KEYSIZE];
+    char EKb_Ks[64];
     char keyS[KEYSIZE];
 
 };
