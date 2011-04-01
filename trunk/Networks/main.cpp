@@ -12,6 +12,7 @@
 #include "Node.h"
 #include "Node_KDC.h"
 #include "Node_Initiator.h"
+#include "Node_Receiver.h"
 
 #define PORT 9001
 #define ANDY "andy.cs.uwec.edu"

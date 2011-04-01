@@ -49,7 +49,19 @@ void Node_Receiver::validateConnection() {
 
     c->listen();
 
-    char n2f[4]
+    long n2f = 0;
+
+    memcpy((void*)&n2f, c->get_msg(), 4);
+
+    if (f(nonce2) != n2f) {
+        cout << "Nonce validation failed!" << endl
+                << "Expected: " << nonce2 << endl
+                << "Received: " << n2f << endl;
+    } else {
+        cout << "Nonce " << n2f << " successfully validated!" << endl <<
+                "Handshaking complete. Begin secure file transmission." << endl;
+    }
+
     
 }
 
