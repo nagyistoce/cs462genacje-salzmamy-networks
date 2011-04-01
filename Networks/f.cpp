@@ -1,5 +1,9 @@
 // PRNG f function provided by Dr. Jack Tan
 
+#ifndef _F_CPP
+#define	_F_CPP
+
+
 #include <iostream>
 
 using namespace std;
@@ -20,15 +24,13 @@ long f(long nonce) {
 	return (long)(((double) state/M)* nonce);
 }
 
-/*
-int main( )
-{
-  const int MAX = 20;
-  long nonce = 5647892341;
-  for  (int i = 1; i <= MAX; i++) {
 
-      cout << f(nonce) << endl;
 
-  }
-  return (0);
-}*/
+#endif /* _F_CPP */
+
+
+
+
+
+
+

@@ -27,13 +27,11 @@ Node_KDC::~Node_KDC(){
 
 void Node_KDC::listen() {
     cout << "KDC: Listening...\n";
-
-    /*TODO: finish this method*/
     
     
     while(1) {
         c->listen();
-        cout << "Received: " << c->get_msg() << endl;
+        //cout << "Received: " << c->get_msg() << endl;
         // if we get a legitimate request, get the keys from user input
         char k[KEYSIZE];
         memset(k, '\0', KEYSIZE); // reset that memory

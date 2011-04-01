@@ -110,7 +110,7 @@ void Node_Initiator::sendSessionKey() {
 
     char n2c[4];
     memset(n2c, '\0', 4);
-
+    memcpy(n2c, (void*)&n2, 4);
     cout << "Sending f(nonce): " << n2 << endl;
 
     c->send(n2c);
