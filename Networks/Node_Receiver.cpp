@@ -57,7 +57,7 @@ void Node_Receiver::validateConnection() {
 
     if (f(nonce2) != n2f) {
         cout << "Nonce validation failed!" << endl
-                << "Expected: " << nonce2 << endl
+                << "Expected: " << f(nonce2) << endl
                 << "Received: " << n2f << endl;
     } else {
         cout << "Nonce " << n2f << " successfully validated!" << endl <<
