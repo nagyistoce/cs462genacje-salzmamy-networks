@@ -18,6 +18,8 @@ Node_Receiver::~Node_Receiver() {
 
 void Node_Receiver::listen() {
 
+    cout << "Receiver: Listening..." << endl;
+
     c->listen();
 
     char msg[64];
