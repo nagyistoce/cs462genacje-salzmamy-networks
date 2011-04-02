@@ -37,6 +37,8 @@ int main (void) {
         if (role == 'k') {
             c = new Connector(PORT); // listening constructor
             Node_KDC kdc = Node_KDC(c);
+            
+             
             kdc.listen();
                 
         } else if (role == 'i') {
@@ -65,11 +67,7 @@ int main (void) {
             ini.newConnector(c);
 
             // send encrypted ks to reciever
-            ini.sendSessionKey();
-
-
-            // receive encrypted nonce
-            // send fnonce
+            ini.sendSessionKey(); // also handles the receiver response
 
 
             // get file name
@@ -82,11 +80,7 @@ int main (void) {
             Node_Receiver rec = Node_Receiver(c);
             rec.listen();
             
-            // input kb, receive ks,
-            // send nonce
-            // receive and validate nonce
-
-            // receiveFile
+            // receive file
 
         }
         

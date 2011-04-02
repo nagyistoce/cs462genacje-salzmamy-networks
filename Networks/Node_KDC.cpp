@@ -26,10 +26,11 @@ Node_KDC::~Node_KDC(){
 
 
 void Node_KDC::listen() {
-    cout << "KDC: Listening...\n";
+    
     
     
     while(1) {
+        cout << "KDC: Listening...\n";
         c->listen();
         //cout << "Received: " << c->get_msg() << endl;
         // if we get a legitimate request, get the keys from user input
