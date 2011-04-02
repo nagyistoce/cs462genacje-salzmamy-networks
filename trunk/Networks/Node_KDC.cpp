@@ -50,7 +50,7 @@ void Node_KDC::listen() {
         cout << "Nonce received: " << nonce << endl;
         
         sendKDCResponse();
-
+        cout << "Session key provision complete!" << endl;
     }
     
 
