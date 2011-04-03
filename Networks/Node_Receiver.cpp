@@ -38,7 +38,7 @@ void Node_Receiver::validateConnection() {
     
     c->set_key(keyS);
     cout << "Session key set! Handshaking..." << endl;
-
+    nonce2 = 0;
     getNonce(&nonce2);
     
     char n[4];
