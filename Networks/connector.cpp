@@ -118,6 +118,7 @@ char * Connector :: get_msg () {
 
 void Connector :: set_key (char * passwd) {
 	key -> Set_Passwd(passwd);
+        cout << "Encryption password set to: " << passwd << endl;
 }
 
 void Connector :: set_msg_size (int size) {
