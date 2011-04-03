@@ -25,7 +25,7 @@ void Node::getStr(char* strToGet, int size, char* prompt) {
     
     char input[size];
 
-    cin.ignore(size, '\n');
+    cin.ignore(1024, '\n');
     // make sure cin gets the whole thing
     cin.get(input, size);
 
