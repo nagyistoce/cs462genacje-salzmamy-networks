@@ -62,8 +62,8 @@ int main(void) {
         char recv[128];
         memset(recv, '\0', 128);
         Node::getStr(recv, 128, "Enter the receiver URL:");
-        c = new Connector(recv, PORT);
-        ini.newConnector(c);
+        Connector c2 = new Connector(recv, PORT);
+        ini.newConnector(c2);
 
         // send encrypted ks to reciever
         ini.sendSessionKey(); // also handles the receiver response
