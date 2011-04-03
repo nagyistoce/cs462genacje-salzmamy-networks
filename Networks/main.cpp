@@ -61,6 +61,7 @@ int main(void) {
         // set up connection with receiver
         char recv[128];
         memset(recv, '\0', 128);
+        cin.ignore(128, '\n');
         Node::getStr(recv, 128, "Enter the receiver URL:");
         cout << "Entered: " << recv << endl;
         Connector c2 = Connector(recv, PORT);
