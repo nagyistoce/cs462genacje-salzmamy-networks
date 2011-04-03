@@ -11,6 +11,8 @@ Node_Receiver::Node_Receiver(Connector* c) : Node(c){
     cout << "Node_Receiver (child class) constructor called." << endl;
     
     getStr(keyB, KEYSIZE, "Enter K(b):");
+
+    c->set_key(keyB);
 }
 
 Node_Receiver::~Node_Receiver() {

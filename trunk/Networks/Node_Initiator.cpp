@@ -81,7 +81,10 @@ void Node_Initiator::getKDCResponse() {
 
     cout << "EKb(Ks) received: " << EKb_Ks << endl;
 
-
+    Blowfish b = Blowfish();
+    b.Set_Passwd("12345");
+    b.Decrypt(EKb_Ks, 64);
+    cout << "EKb(Ks) decrypted with 12345: " << EKb_Ks << endl;
     
     return;
 }
