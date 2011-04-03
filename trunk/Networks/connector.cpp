@@ -100,6 +100,7 @@ void Connector :: send (char * msg) {
 
 void Connector :: send_unencrypted (char * msg) {
     char msg_copy [msg_size];
+    memset(msg_copy, '\0', msg_size); // clear it out.
     memcpy (msg_copy, msg, msg_size);
 
     cout << "Unencrypted message to send: " << msg_copy << endl;
