@@ -72,3 +72,6 @@ long Node::f(long nonce) {
 		state = t + M;
 	return (long)(((double) state/M)* nonce);
 }
+
+
+
