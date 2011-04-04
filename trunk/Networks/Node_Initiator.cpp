@@ -79,6 +79,8 @@ void Node_Initiator::getKDCResponse() {
     memset(EKb_Ks, '\0', 64);
     memcpy(EKb_Ks, &msg[60], 64);
 
+    cout << "Msg at index 60: \n" << &msg[60] << endl << endl;;
+
     cout << "EKb(Ks) received: " << EKb_Ks << endl;
     /*
     Blowfish b = Blowfish();
