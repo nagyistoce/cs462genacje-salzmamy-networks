@@ -88,7 +88,7 @@ int main(void) {
         exit(1);
     }
 
-    delete c;
+    //delete c;
 
     return 0;
 }
