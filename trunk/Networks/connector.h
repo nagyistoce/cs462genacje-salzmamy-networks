@@ -23,7 +23,6 @@
 
 using namespace std;
 
-//#define MAXBUFLEN (1024*1024)
 
 class Connector {
 
@@ -44,7 +43,7 @@ public:
 
 private:
 	Blowfish * key;
-	struct sockaddr_in their_addr; // connector�s address information
+	struct sockaddr_in their_addr; // connectors address information
 	struct sockaddr_in my_addr; // my address information
 	int sockfd;
 	int numbytes;
