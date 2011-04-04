@@ -64,6 +64,7 @@ void Node_Receiver::validateConnection() {
     } else {
         cout << "Nonce " << n2f << " successfully validated!" << endl <<
                 "Handshaking complete. Begin secure file transmission." << endl;
+        c->send("ack"); // ack the handshaking
     }
 
     

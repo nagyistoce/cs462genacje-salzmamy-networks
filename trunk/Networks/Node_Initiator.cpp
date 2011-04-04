@@ -118,6 +118,14 @@ void Node_Initiator::sendSessionKey() {
 
     c->send(n2c);
 
+    cout << "Listening for ack..." << endl;
+    c->listen();
+
+    if (strcmp(c.get_msg(), "ack") == 0) {
+        cout << "Key exchange complete.\n" <<
+                "Beginning secure transmission..." << endl;
+    }
+
     return;
 }
 
