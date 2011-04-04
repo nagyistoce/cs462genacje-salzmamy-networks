@@ -31,12 +31,12 @@ int main(void) {
     // Node kdc = Node_KDC(c);
     // kdc.listen();
 
-    Connector *c;
+    Connector c;
 
 
     if (role == 'k') {
-        c = new Connector(PORT); // listening constructor
-        Node_KDC kdc = Node_KDC(c);
+        c = Connector(PORT); // listening constructor
+        Node_KDC kdc = Node_KDC(&c);
 
 
         kdc.listen();
@@ -49,9 +49,9 @@ int main(void) {
         char kdc[128];
         memset(kdc, '\0', 128);
         Node::getStr(kdc, 128, "Enter the KDC URL:");
-        c = new Connector(kdc, PORT);
+        c = Connector(kdc, PORT);
 
-        Node_Initiator ini = Node_Initiator(c);
+        Node_Initiator ini = Node_Initiator(&c);
 
         // send request, receive response from kdc
         ini.sendRequest();
@@ -77,8 +77,8 @@ int main(void) {
 
     } else if (role == 'r') {
         // receiver:
-        c = new Connector(PORT); // listening constructor
-        Node_Receiver rec = Node_Receiver(c);
+        c = Connector(PORT); // listening constructor
+        Node_Receiver rec = Node_Receiver(&c);
         rec.listen();
 
         // receive file
