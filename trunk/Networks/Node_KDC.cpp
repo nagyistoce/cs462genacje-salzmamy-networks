@@ -109,7 +109,7 @@ void Node_KDC::sendKDCResponse() {
     
     memcpy(msg, &nonce, sizeof(long)); //nonce
     memcpy(&msg[4], keyS, KEYSIZE);  //|ks
-    memcpy(&msg[60], tempS, strlen(tempS)); //|Ekb(ks)
+    memcpy(&msg[60], tempS, 64); //|Ekb(ks)
 
     c->send(msg); // send Eka(nonce|ks|Ekb(ks))
     return;
