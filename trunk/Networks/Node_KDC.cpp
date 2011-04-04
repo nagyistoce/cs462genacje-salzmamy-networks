@@ -95,7 +95,7 @@ void Node_KDC::sendKDCResponse() {
     char tempS[64];// must be a multiple of 8 bytes
     memset(tempS, '\0', 64);
 
-    strcpy(tempS, keyS); // copy the contents of keyS into tempS
+    memcpy(tempS, keyS, KEYSIZE); // copy the contents of keyS into tempS
     b.Encrypt((void*)tempS, 64); // tempS is now ready to be added to the response
     
 
