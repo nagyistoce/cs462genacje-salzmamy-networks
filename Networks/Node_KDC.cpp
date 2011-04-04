@@ -13,7 +13,7 @@ Node_KDC::Node_KDC(Connector *c) : Node(c) {
     
     // calls super class
     cout << "Node_KDC (child) constructor...\n";
-    getKeys();
+    getKeys(); // gets A and B keys
     c->set_key(keyA); // prepare to talk to the receiver.
     nonce = 0;
 }
