@@ -31,12 +31,12 @@ int main(void) {
     // Node kdc = Node_KDC(c);
     // kdc.listen();
 
-    Connector c;
+    Connector *c;
 
 
     if (role == 'k') {
-        c = Connector(PORT); // listening constructor
-        Node_KDC kdc = Node_KDC(&c);
+        c = new Connector(PORT); // listening constructor
+        Node_KDC kdc = Node_KDC(c);
 
 
         kdc.listen();
@@ -49,9 +49,9 @@ int main(void) {
         char kdc[128];
         memset(kdc, '\0', 128);
         Node::getStr(kdc, 128, "Enter the KDC URL:");
-        c = Connector(kdc, PORT);
+        c = new Connector(kdc, PORT);
 
-        Node_Initiator ini = Node_Initiator(&c);
+        Node_Initiator ini = Node_Initiator(c);
 
         // send request, receive response from kdc
         ini.sendRequest();
@@ -64,8 +64,8 @@ int main(void) {
         cin.ignore(128, '\n');
         Node::getStr(recv, 128, "Press Enter then enter the receiver URL:");
         cout << "Entered: " << recv << endl;
-        Connector c2 = Connector(recv, PORT);
-        ini.newConnector(&c2);
+        Connector c2 = new Connector(recv, PORT);
+        ini.newConnector(c2);
 
         // send encrypted ks to reciever
         ini.sendSessionKey(); // also handles the receiver response
@@ -77,8 +77,8 @@ int main(void) {
 
     } else if (role == 'r') {
         // receiver:
-        c = Connector(PORT); // listening constructor
-        Node_Receiver rec = Node_Receiver(&c);
+        c = new Connector(PORT); // listening constructor
+        Node_Receiver rec = Node_Receiver(c);
         rec.listen();
 
         // receive file
