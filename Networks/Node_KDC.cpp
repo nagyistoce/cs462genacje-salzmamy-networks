@@ -102,8 +102,8 @@ void Node_KDC::sendKDCResponse() {
     // set the connector's encryption key to keyA if not done so already
     c->set_key(keyA);
 
-    char msg[sizeof(long)+KEYSIZE+strlen(tempS)];
-    memset(msg, '\0', sizeof(long)+KEYSIZE+strlen(tempS));
+    char msg[sizeof(long)+KEYSIZE+64];
+    memset(msg, '\0', sizeof(long)+KEYSIZE+64);
     
     // size of the three elements within it
     
