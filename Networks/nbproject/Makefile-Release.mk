@@ -33,10 +33,9 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/blowfish.o \
 	${OBJECTDIR}/Node_Initiator.o \
-	${OBJECTDIR}/Node_Receiver.o \
 	${OBJECTDIR}/Node.o \
+	${OBJECTDIR}/Node_Receiver.o \
 	${OBJECTDIR}/endian.o \
-	${OBJECTDIR}/f.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/connector.o \
 	${OBJECTDIR}/Node_KDC.o
@@ -75,25 +74,20 @@ ${OBJECTDIR}/Node_Initiator.o: nbproject/Makefile-${CND_CONF}.mk Node_Initiator.
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_Initiator.o Node_Initiator.cpp
 
-${OBJECTDIR}/Node_Receiver.o: nbproject/Makefile-${CND_CONF}.mk Node_Receiver.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_Receiver.o Node_Receiver.cpp
-
 ${OBJECTDIR}/Node.o: nbproject/Makefile-${CND_CONF}.mk Node.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node.o Node.cpp
 
+${OBJECTDIR}/Node_Receiver.o: nbproject/Makefile-${CND_CONF}.mk Node_Receiver.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_Receiver.o Node_Receiver.cpp
+
 ${OBJECTDIR}/endian.o: nbproject/Makefile-${CND_CONF}.mk endian.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/endian.o endian.cpp
-
-${OBJECTDIR}/f.o: nbproject/Makefile-${CND_CONF}.mk f.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/f.o f.cpp
 
 ${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
