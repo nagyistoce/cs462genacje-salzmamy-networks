@@ -24,9 +24,9 @@ void Node_Receiver::listen() {
 
     c->listen();
 
-    char msg[64];
-    memset(msg, '\0', 64);
-    memcpy(msg, c->get_msg(), 64);
+    char msg[KEYSIZE];
+    memset(msg, '\0', KEYSIZE);
+    memcpy(msg, c->get_msg(), KEYSIZE);
 
     strcpy(keyS, msg);
 
