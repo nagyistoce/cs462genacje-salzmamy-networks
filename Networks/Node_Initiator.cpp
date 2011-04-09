@@ -74,6 +74,8 @@ void Node_Initiator::getKDCResponse() {
 
     cout << "Ks received: " << keyS << endl;
 
+    /*TODO: there is a bug when sending the EKb_Ks:
+     *      the unencrypted key is sent at the end*/
 
     // copy 64 bytes from index 60 EKb(Ks)   
     memset(EKb_Ks, '\0', 64);
