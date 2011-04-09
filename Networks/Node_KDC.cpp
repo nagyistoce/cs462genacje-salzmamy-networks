@@ -111,6 +111,11 @@ void Node_KDC::sendKDCResponse() {
     memcpy(&msg[4], keyS, KEYSIZE);  //|ks
     memcpy(&msg[60], tempS, 64); //|Ekb(ks)
 
+    cout << "Response: " << endl <<
+            "[Nonce: " << nonce << endl <<
+            "|Ks: " << keyS << endl <<
+            "|EKb(Ks): " << tempS << "]" << endl;
+
     c->send(msg); // send Eka(nonce|ks|Ekb(ks))
     return;
 }
