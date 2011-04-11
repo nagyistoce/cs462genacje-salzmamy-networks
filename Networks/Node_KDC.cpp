@@ -92,30 +92,31 @@ void Node_KDC::sendKDCResponse() {
     Blowfish b = Blowfish();
 
     b.Set_Passwd(keyB);
-    char tempS[64];// must be a multiple of 8 bytes
-    memset(tempS, '\0', 64);
+    char tempS[KEYSIZE];// must be a multiple of 8 bytes
+    memset(tempS, '\0', KEYSIZE);
 
     memcpy(tempS, keyS, KEYSIZE); // copy the contents of keyS into tempS
-    b.Encrypt((void*)tempS, 64); // tempS is now ready to be added to the response
+    b.Encrypt((void*)tempS, KEYSIZE); // tempS is now ready to be added to the response
     
 
     // set the connector's encryption key to keyA if not done so already
     c->set_key(keyA);
 
-    char msg[sizeof(long)+KEYSIZE+64];
-    memset(msg, '\0', sizeof(long)+KEYSIZE+64);
+    // size of the three elements within it: 116 bytes
+    char msg[sizeof(long)+KEYSIZE+KEYSIZE];
+    memset(msg, '\0', sizeof(long)+KEYSIZE+KEYSIZE);
     
-    // size of the three elements within it
-    
+    // make the packet
     memcpy(msg, &nonce, sizeof(long)); //nonce
     memcpy(&msg[4], keyS, KEYSIZE);  //|ks
-    memcpy(&msg[60], tempS, 64); //|Ekb(ks)
+    memcpy(&msg[60], tempS, KEYSIZE); //|Ekb(ks)
 
-    cout << "Response: " << endl <<
+    /*
+       cout << "Response: " << endl <<
             "[Nonce: " << nonce << endl <<
             "|Ks: " << keyS << endl <<
             "|EKb(Ks): " << tempS << "]" << endl;
-
+    */
     c->send(msg); // send Eka(nonce|ks|Ekb(ks))
     return;
 }
