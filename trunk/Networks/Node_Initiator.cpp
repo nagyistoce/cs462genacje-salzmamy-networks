@@ -45,8 +45,8 @@ void Node_Initiator::getKDCResponse() {
     // KDC response will be in the format:
     // bytes 0-3 = nonce (4 bytes)
     // bytes 4-59 = keyS (56 bytes)
-    // bytes 60-123 = EKb(Ks) (64 bytes)
-    // = 124 bytes total
+    // bytes 60-115 = EKb(Ks) (56 bytes)
+    // = 116 bytes total
 
     c->listen();
 
@@ -77,9 +77,9 @@ void Node_Initiator::getKDCResponse() {
     /*TODO: there is a bug when sending the EKb_Ks:
      *      the unencrypted key is sent at the end*/
 
-    // copy 64 bytes from index 60 EKb(Ks)   
-    memset(EKb_Ks, '\0', 64);
-    memcpy(EKb_Ks, &msg[60], 64);
+    // copy 56 bytes from index 60 EKb(Ks)
+    memset(EKb_Ks, '\0', KEYSIZE);
+    memcpy(EKb_Ks, &msg[60], KEYSIZE);
 
     cout << "Msg at index 60: \n" << &msg[60] << endl << endl;;
 
@@ -87,7 +87,7 @@ void Node_Initiator::getKDCResponse() {
     /*
     Blowfish b = Blowfish();
     b.Set_Passwd("12345");
-    b.Decrypt(EKb_Ks, 64);
+    b.Decrypt(EKb_Ks, KEYSIZE);
     cout << "EKb(Ks) decrypted with 12345: " << EKb_Ks << endl;
     */
     return;
