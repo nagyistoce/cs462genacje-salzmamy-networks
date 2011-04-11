@@ -81,15 +81,7 @@ void Node_Initiator::getKDCResponse() {
     memset(EKb_Ks, '\0', KEYSIZE);
     memcpy(EKb_Ks, &msg[60], KEYSIZE);
 
-    cout << "Msg at index 60: \n" << &msg[60] << endl << endl;;
-
-    cout << "EKb(Ks) received: " << EKb_Ks << endl;
-    /*
-    Blowfish b = Blowfish();
-    b.Set_Passwd("12345");
-    b.Decrypt(EKb_Ks, KEYSIZE);
-    cout << "EKb(Ks) decrypted with 12345: " << EKb_Ks << endl;
-    */
+    
     return;
 }
 
