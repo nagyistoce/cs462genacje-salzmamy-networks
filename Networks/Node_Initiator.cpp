@@ -74,8 +74,6 @@ void Node_Initiator::getKDCResponse() {
 
     cout << "Ks received: " << keyS << endl;
 
-    /*TODO: there is a bug when sending the EKb_Ks:
-     *      the unencrypted key is sent at the end*/
 
     // copy 56 bytes from index 60 EKb(Ks)
     memset(EKb_Ks, '\0', KEYSIZE);
@@ -121,6 +119,14 @@ void Node_Initiator::sendSessionKey() {
         cout << "Key exchange complete.\n" <<
                 "Beginning secure transmission..." << endl;
     }
+
+    /* TODO: Get packet size from user
+     * Send the packet size to the receiver and get an ack back.
+     * Set the connector's msg size variable to the right length
+     * (make sure it can hold a crc too!)
+     * TODO: Get transmission method from user (s&g / gbn / sr)
+     * Receive ack for transmission method
+     */
 
     return;
 }

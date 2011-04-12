@@ -67,6 +67,14 @@ void Node_Receiver::validateConnection() {
         c->send("ack"); // ack the handshaking
     }
 
+    /* TODO: Get packet size from initiator
+     * Send an ack back.
+     * Set the connector's msg size variable to the right length
+     * (make sure it can hold a crc too!)
+     * TODO: Get transmission method from initiator (s&g / gbn / sr)
+     * Send an ack back.
+     */
+
     
 }
 

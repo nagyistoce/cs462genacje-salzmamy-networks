@@ -10,27 +10,24 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCRC32::CCRC32(void)
-{
+CCRC32::CCRC32(void) {
     this->Initialize();
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CCRC32::~CCRC32(void)
-{
+CCRC32::~CCRC32(void) {
     //No destructor code.
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
     This function initializes "CRC Lookup Table". You only need to call it once to
-        initalize the table before using any of the other CRC32 calculation functions.
+    initalize the table before using any of the other CRC32 calculation functions.
 */
 
-void CCRC32::Initialize(void)
-{
+void CCRC32::Initialize(void) {
     //0x04C11DB7 is the official polynomial used by PKZip, WinZip and Ethernet.
     unsigned long ulPolynomial = 0x04C11DB7;
 
@@ -57,8 +54,7 @@ void CCRC32::Initialize(void)
     You can create CRCs without it, but they won't conform to the standard.
 */
 
-unsigned long CCRC32::Reflect(unsigned long ulReflect, const char cChar)
-{
+unsigned long CCRC32::Reflect(unsigned long ulReflect, const char cChar) {
     unsigned long ulValue = 0;
 
     // Swap bit 0 for bit 7, bit 1 For bit 6, etc....
@@ -81,8 +77,7 @@ unsigned long CCRC32::Reflect(unsigned long ulReflect, const char cChar)
     Note: For Example usage example, see FileCRC().
 */
 
-void CCRC32::PartialCRC(unsigned long *ulCRC, const unsigned char *sData, unsigned long ulDataLength)
-{
+void CCRC32::PartialCRC(unsigned long *ulCRC, const unsigned char *sData, unsigned long ulDataLength) {
     while(ulDataLength--)
     {
         //If your compiler complains about the following line, try changing each
@@ -98,8 +93,7 @@ void CCRC32::PartialCRC(unsigned long *ulCRC, const unsigned char *sData, unsign
     Returns the calculated CRC32 (through ulOutCRC) for the given string.
 */
 
-void CCRC32::FullCRC(const unsigned char *sData, unsigned long ulDataLength, unsigned long *ulOutCRC)
-{
+void CCRC32::FullCRC(const unsigned char *sData, unsigned long ulDataLength, unsigned long *ulOutCRC) {
     *(unsigned long *)ulOutCRC = 0xffffffff; //Initilaize the CRC.
     this->PartialCRC(ulOutCRC, sData, ulDataLength);
     *(unsigned long *)ulOutCRC ^= 0xffffffff; //Finalize the CRC.
@@ -110,8 +104,7 @@ void CCRC32::FullCRC(const unsigned char *sData, unsigned long ulDataLength, uns
     Returns the calculated CRC23 for the given string.
 */
 
-unsigned long CCRC32::FullCRC(const unsigned char *sData, unsigned long ulDataLength)
-{
+unsigned long CCRC32::FullCRC(const unsigned char *sData, unsigned long ulDataLength) {
     unsigned long ulCRC = 0xffffffff; //Initilaize the CRC.
     this->PartialCRC(&ulCRC, sData, ulDataLength);
     return(ulCRC ^ 0xffffffff); //Finalize the CRC and return.
@@ -125,8 +118,7 @@ unsigned long CCRC32::FullCRC(const unsigned char *sData, unsigned long ulDataLe
             it has been provided for performance purposes only.
 */
 
-bool CCRC32::FileCRC(const char *sFileName, unsigned long *ulOutCRC, unsigned long ulBufferSize)
-{
+bool CCRC32::FileCRC(const char *sFileName, unsigned long *ulOutCRC, unsigned long ulBufferSize) {
     *(unsigned long *)ulOutCRC = 0xffffffff; //Initilaize the CRC.
 
     FILE *fSource = NULL;
@@ -165,8 +157,7 @@ bool CCRC32::FileCRC(const char *sFileName, unsigned long *ulOutCRC, unsigned lo
             it has been provided for performance purposes only.
 */
 
-bool CCRC32::FileCRC(const char *sFileName, unsigned long *ulOutCRC)
-{
+bool CCRC32::FileCRC(const char *sFileName, unsigned long *ulOutCRC) {
     return this->FileCRC(sFileName, ulOutCRC, 1048576);
 }
 
