@@ -21,11 +21,17 @@ SelectiveRepeat::~SelectiveRepeat() {
 
 
 void SelectiveRepeat::run_sender() {
+    /*TODO: complete this method: run_sender()*/
+    
     // get window size as an input from the user.
 
     // send window size to receiver
 
     // receive ack + window size from receiver, validate
+
+    // get file name as input from user
+
+    // send file name to receiver
 
     // send file
 }

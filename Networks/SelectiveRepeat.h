@@ -9,6 +9,7 @@
 #define	_SELECTIVEREPEAT_H
 
 #include "connector.h"
+#include <fstream>
 
 class SelectiveRepeat {
 public:
@@ -26,12 +27,15 @@ private:
     Connector* c;
 
     /* Sender */
-    int send_base;
+    istream file_to_send;
+    int file_size; // used to calculate max seq num
+    int sender_base;
     int next_seq_num;
     void send_pkt_thread(void* data);
 
     /* Receiver */
-    int recv_base;
+    ostream file_to_write;
+    int receiver_base;
     void send_ack(int seqnum);
     
 
