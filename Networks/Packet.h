@@ -14,12 +14,15 @@ using namespace std;
 class Packet {
 public:
     Packet();
-    Packet(int size);
+
+    Packet(int size, int seq);
     Packet(const Packet& orig);
     virtual ~Packet();
 
     long get_start_time();
-    long set_start_time(long t);
+    void set_start_time(long t);
+    char* get_data();
+    int get_seq_num();
 private:
 
     char* data;

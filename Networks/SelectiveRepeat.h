@@ -9,10 +9,17 @@
 #define	_SELECTIVEREPEAT_H
 
 #include "connector.h"
+#include "Packet.h"
+
 #include <fstream>
+#include <list>
+#include <iterator>
+
+//using namespace std;
 
 class SelectiveRepeat {
 public:
+    SelectiveRepeat();
     SelectiveRepeat(Connector* c);
     SelectiveRepeat(const SelectiveRepeat& orig);
     virtual ~SelectiveRepeat();
@@ -20,21 +27,28 @@ public:
     /* Sender/Receiver protocol methods */
     void run_sender();
     void run_receiver();
+    
+    
 private:
     
     /* Shared */
     int window_size;
     Connector* c;
 
+    // waiting packets on sender side
+    // packets received on receiver side
+    list<Packet> packets;
+    
+
     /* Sender */
-    istream file_to_send;
+    
     int file_size; // used to calculate max seq num
     int sender_base;
     int next_seq_num;
     void send_pkt_thread(void* data);
 
     /* Receiver */
-    ostream file_to_write;
+    
     int receiver_base;
     void send_ack(int seqnum);
     
