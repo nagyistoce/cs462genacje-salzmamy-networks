@@ -42,10 +42,12 @@ void Node_Receiver::validateConnection() {
     cout << "Session key set! Handshaking..." << endl;
     nonce2 = 0;
     getNonce(&nonce2);
-    
-    char n[4];
-    memset(n, '\0', 4);
-    memcpy(n, &nonce2, 4);
+
+    /*TODO: Urgent: adjust all packets to accomodate 8 byte longs*/
+
+    char n[8];
+    memset(n, '\0', 8);
+    memcpy(n, &nonce2, 8);
     
     c->send(n);
 
@@ -55,7 +57,7 @@ void Node_Receiver::validateConnection() {
 
     long n2f = 0;
 
-    memcpy((void*)&n2f, c->get_msg(), 4);
+    memcpy((void*)&n2f, c->get_msg(), 8);
 
     if (f(nonce2) != n2f) {
         cout << "Nonce validation failed!" << endl
