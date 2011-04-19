@@ -54,8 +54,8 @@ int main(void) {
         Node_Initiator ini = Node_Initiator(c);
 
         // send request, receive response from kdc
-        ini.sendRequest();
-        ini.getKDCResponse();
+        ini.send_request();
+        ini.get_kdc_response();
 
 
         // set up connection with receiver
@@ -68,7 +68,7 @@ int main(void) {
         ini.newConnector(c2);
 
         // send encrypted ks to reciever
-        ini.sendSessionKey(); // also handles the receiver response
+        ini.send_session_key(); // also handles the receiver response
 
 
         // get file name

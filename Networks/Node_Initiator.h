@@ -15,11 +15,14 @@ public:
     Node_Initiator(Connector* c);
     virtual ~Node_Initiator();
 
-    void sendRequest();
-    void getKDCResponse();
+    void send_request();
+    void get_kdc_response();
 
-    void sendSessionKey();
+    void send_session_key();
 private:
+
+    void handshake();
+    void get_transmission_data();
 
     // char kdcURL[128];
     char receiverURL[128];
@@ -29,6 +32,13 @@ private:
     char EKb_Ks[64];
     char keyS[KEYSIZE];
 
+    //////////////////////
+    // transmission data
+    
+    // 'w' = stop and wait, 'g' = go back n, 's' = selective repeat
+    char protocol;
+    long packet_size;
+    //////////////////////
 };
 
 #endif	/* _NODE_INITIATOR_H */
