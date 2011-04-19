@@ -33,11 +33,11 @@ void Node::getStr(char* strToGet, int size, char* prompt) {
 
 }
 
-void Node::getNonce(long* nonce) {
+void Node::getNonce(long* nonce, char* msg) {
 
 
-    cout << "Please enter a nonce." << endl;
-    cin.ignore(2048, '\n');
+    cout << msg << endl;
+    cin.ignore(1024, '\n');
     cin >>*nonce;
 
 

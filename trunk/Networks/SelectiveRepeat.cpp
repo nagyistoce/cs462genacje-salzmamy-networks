@@ -29,7 +29,7 @@ void SelectiveRepeat::run_sender() {
     /*TODO: complete this method: run_sender()*/
     
     // get window size as an input from the user.
-    Node::
+    //Node::
     // send window size to receiver
 
     // receive ack + window size from receiver, validate

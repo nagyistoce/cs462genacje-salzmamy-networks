@@ -44,8 +44,8 @@ void Node_KDC::listen() {
 
         cout << "K(s) set to: " << keyS << endl;
         // fill nonce variable
-        // nonce will be the first 4 bytes (long *)
-        memcpy(&nonce, c->get_msg(), 4);
+        // nonce will be the first 8 bytes (long *)
+        memcpy(&nonce, c->get_msg(), sizeof(long));
 
         cout << "Nonce received: " << nonce << endl;
         
@@ -102,14 +102,14 @@ void Node_KDC::sendKDCResponse() {
     // set the connector's encryption key to keyA if not done so already
     c->set_key(keyA);
 
-    // size of the three elements within it: 116 bytes
+    // size of the three elements within it: 8+56+56 = 120 bytes
     char msg[sizeof(long)+KEYSIZE+KEYSIZE];
     memset(msg, '\0', sizeof(long)+KEYSIZE+KEYSIZE);
     
     // make the packet
     memcpy(msg, &nonce, sizeof(long)); //nonce
-    memcpy(&msg[4], keyS, KEYSIZE);  //|ks
-    memcpy(&msg[60], tempS, KEYSIZE); //|Ekb(ks)
+    memcpy(&msg[8], keyS, KEYSIZE);    //|ks
+    memcpy(&msg[64], tempS, KEYSIZE);  //|Ekb(ks)
 
     /*
        cout << "Response: " << endl <<

@@ -27,7 +27,7 @@ protected:
     
 
     
-    void getNonce(long* nonce);
+    void getNonce(long* nonce, char* msg);
     bool validate(long& mine, long& theirs);
 
 };
