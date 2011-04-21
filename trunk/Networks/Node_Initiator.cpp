@@ -26,12 +26,13 @@ Node_Initiator::~Node_Initiator() {
 void Node_Initiator::send_request() {
     nonce = 0;
     getNonce(&nonce, "Enter a nonce: ");
-    char msg[128];
+    char msg[64];
 
     // copy the nonce into the request
-    memcpy(msg,&nonce, sizeof(long));
-    char* request = "Requesting session key...";
-    memcpy(&msg[8], request, strlen(request));
+    cout << "sizeof(long) = " << sizeof(long) << endl;
+    memcpy(msg, &nonce, sizeof(long));
+    //char* request = "Requesting session key...";
+    //memcpy(&msg[8], request, strlen(request));
 
     // [ nonce |           string              ]
 
@@ -68,16 +69,16 @@ void Node_Initiator::get_kdc_response() {
     }
     
 
-    // copy 56 bytes starting at index 4
+    // copy 56 bytes starting at index 8
     memset(keyS, '\0', KEYSIZE);
-    memcpy(keyS, &msg[4], KEYSIZE);
+    memcpy(keyS, &msg[8], KEYSIZE);
 
     cout << "Ks received: " << keyS << endl;
 
 
-    // copy 56 bytes from index 60 EKb(Ks)
+    // copy 56 bytes from index 64 EKb(Ks)
     memset(EKb_Ks, '\0', KEYSIZE);
-    memcpy(EKb_Ks, &msg[60], KEYSIZE);
+    memcpy(EKb_Ks, &msg[64], KEYSIZE);
 
     
     return;
@@ -122,7 +123,7 @@ void Node_Initiator::handshake() {
     c->listen();
 
     if (strcmp(c->get_msg(), "ack") == 0) {
-        cout << "Key exchange complete." << endl;
+        cout << "***Key exchange complete***\n" << endl;
     }
 
     get_transmission_data();
@@ -141,9 +142,9 @@ void Node_Initiator::get_transmission_data() {
 
     cout << "Obtaining transmission data from user...\n" << endl;
 
-    cout << "Enter a protocol: \n" <<
-            "'w' = stop and wait" << endl
-            "'g' = go back n" << endl
+    cout << "Enter a protocol: " << endl <<
+            "'w' = stop and wait" << endl <<
+            "'g' = go back n" << endl <<
             "'s' = selective repeat" << endl;
     while (protocol != 'w' && protocol != 'g' && protocol != 's') {
         cin.ignore(1024, '\n');
@@ -151,29 +152,35 @@ void Node_Initiator::get_transmission_data() {
     }
 
     packet_size = -1;
-    while (packet_size <= 0 && packet_size >=64) {
-        getNonce(&packet_size,
-                "Enter a packet size (in kb) between 1 and 64: ");
+    while (!( (packet_size > 0) && (packet_size < 64) ) ) {
+        getInt(&packet_size,
+                "Enter a packet size (in kb) between 1 and 63: ");
     }
     packet_size = packet_size*1024;
 
-    char msg[17];
+    char msg[13];
     memset(msg, '\0', 17);
 
     // transmission_data_packet will look like:
-    // [protocol |  packet_size   |   frame_size(if go back n or sel repeat)]
+    // [protocol |  packet_size   |   window_size(if go back n or sel repeat)]
     memcpy(msg, (void*)&protocol, 1); // fill first bit with the protocol
-    memcpy(msg, (void*)&packet_size, sizeof(long));
+    memcpy(msg, (void*)&packet_size, sizeof(int));
     if (protocol == 'w') {
         // have all the data we need - let the receiver know of our choices
         c->send(msg);
 
+
         // listen for a response with the same content
         
+
 
         c->listen();
         char temp[17];
         memcpy(temp, c->get_msg(), 17);
+        // validate
+
+        // make TransferProtocol object, run the protocol
+
     }
 
 

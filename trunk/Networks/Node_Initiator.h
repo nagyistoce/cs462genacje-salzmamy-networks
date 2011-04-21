@@ -37,7 +37,7 @@ private:
     
     // 'w' = stop and wait, 'g' = go back n, 's' = selective repeat
     char protocol;
-    long packet_size;
+    int packet_size;
     //////////////////////
 };
 

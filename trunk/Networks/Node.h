@@ -25,7 +25,6 @@ public:
     static long f(long nonce);
 protected:
     Connector* c;
-    TransferProtocol* tp;
 
     
     void getNonce(long* nonce, char* msg);
