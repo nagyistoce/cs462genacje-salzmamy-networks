@@ -17,7 +17,7 @@
 
 //using namespace std;
 
-class SelectiveRepeat {
+class SelectiveRepeat  {
 public:
     SelectiveRepeat();
     SelectiveRepeat(Connector* c);
@@ -30,10 +30,11 @@ public:
     
     
 private:
-    
-    /* Shared */
-    int window_size;
     Connector* c;
+    /* Shared vars */
+    int window_size;
+    int packet_size;
+    char* filename; // file being sent or received
 
     // waiting packets on sender side
     // packets received on receiver side

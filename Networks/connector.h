@@ -20,6 +20,7 @@
 #include <netdb.h>
 #include <iostream>
 #include "blowfish.h"
+#include "crc.h"
 
 using namespace std;
 
@@ -43,13 +44,15 @@ public:
 
 private:
 	Blowfish * key;
+        CCRC32* crc;
 	struct sockaddr_in their_addr; // connectors address information
 	struct sockaddr_in my_addr; // my address information
 	int sockfd;
 	int numbytes;
 	int port;
 	int addr_len;
-	int msg_size;
+	int msg_size; // Important: this is larger than the user's msg size to
+        // fit the CRC at the end!
 	struct hostent * he;
 	char *buf;
 };

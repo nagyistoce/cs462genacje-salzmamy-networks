@@ -45,6 +45,7 @@ void Node_KDC::listen() {
         cout << "K(s) set to: " << keyS << endl;
         // fill nonce variable
         // nonce will be the first 8 bytes (long *)
+        nonce = 0;
         memcpy(&nonce, c->get_msg(), sizeof(long));
 
         cout << "Nonce received: " << nonce << endl;

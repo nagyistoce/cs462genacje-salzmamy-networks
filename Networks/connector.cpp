@@ -1,10 +1,12 @@
 #include "connector.h"
 
 Connector :: Connector () {
-	cout << "default constructor called\n";
+    cout << "default constructor called\n";
 }
 
 Connector :: Connector (int port_num) {
+    crc = new CCRC32();
+    crc.Initialize();
     addr_len = sizeof (struct sockaddr);
     numbytes = 0;
     port = port_num;
@@ -33,6 +35,8 @@ Connector :: Connector (int port_num) {
 
 
 Connector :: Connector (char * receiver, int port_num) {
+    crc = new CCRC32();
+    crc.Initialize();
     numbytes = 0;
     port = port_num;
     addr_len = sizeof (struct sockaddr);
@@ -64,9 +68,10 @@ Connector :: Connector (char * receiver, int port_num) {
 Connector :: ~Connector () {
     close (sockfd);
     delete (key);
+    delete (crc);
     delete [] buf;
 }
-
+/* TODO: FINISH CRC IN LISTEN AND SEND METHODS */
 void Connector :: listen () {
 
     if ((numbytes = recvfrom (sockfd, buf, msg_size, 0, (struct sockaddr *) & their_addr, (socklen_t *) & addr_len)) == -1) {
@@ -74,13 +79,17 @@ void Connector :: listen () {
         exit (1);
     }
 
-    cout << "Before decrypting: " << buf << endl;
+    //cout << "Before decrypting: " << buf << endl;
     key -> Decrypt((void *) buf, msg_size);
-    cout << "After decrypting: " << buf << endl;
+    unsigned long cc = 0;
+    memcpy(&cc, &buf[msg_size-9], sizeof(long));
+    crc.FullCRC()
+
+    cout << "Decrypted message received: " << buf << endl;
     buf [numbytes] = '\0';
 
-    printf ("got packet from %s\n", inet_ntoa (their_addr.sin_addr));
-    printf ("packet is %d bytes long\n", numbytes);
+    printf ("From %s\n", inet_ntoa (their_addr.sin_addr));
+    printf ("%d bytes long\n", numbytes);
 }
 
 void Connector :: send (char * msg) {
@@ -90,15 +99,17 @@ void Connector :: send (char * msg) {
 
     cout << "Unencrypted message to send: " << msg_copy << endl;
     key -> Encrypt((void *) msg_copy, msg_size);
-    cout << "Encrypted message to send: " << msg_copy << endl;
+    //cout << "Encrypted message to send: " << msg_copy << endl;
 
-    if ((numbytes = sendto(sockfd, msg_copy, strlen(msg_copy), 0, (struct sockaddr *) & their_addr, sizeof (struct sockaddr))) == -1) {
+    if ((numbytes = sendto(sockfd, msg_copy, msg_size, 0, (struct sockaddr *) & their_addr, sizeof (struct sockaddr))) == -1) {
         cout << "Error in send(): Failed to send. Terminating...\n";
         exit(1);
     }
 }
 
 void Connector :: send_unencrypted (char * msg) {
+    unsigned long crc = 0;
+    this->crc.FullCRC(msg, &crc);
     char msg_copy [msg_size];
     memset(msg_copy, '\0', msg_size); // clear it out.
     memcpy (msg_copy, msg, msg_size);
@@ -106,22 +117,26 @@ void Connector :: send_unencrypted (char * msg) {
     cout << "Unencrypted message to send: " << msg_copy << endl;
 
 
-    if ((numbytes = sendto(sockfd, msg_copy, strlen(msg_copy), 0, (struct sockaddr *) & their_addr, sizeof (struct sockaddr))) == -1) {
+    if ((numbytes = sendto(sockfd, msg_copy, msg_size, 0, (struct sockaddr *) & their_addr, sizeof (struct sockaddr))) == -1) {
         cout << "Error in send_unencrypted(): Failed to send. Terminating...\n";
         exit(1);
     }
 }
 
 char * Connector :: get_msg () {
-		return buf;
+    return buf;
 }
 
 void Connector :: set_key (char * passwd) {
-	key -> Set_Passwd(passwd);
-        cout << "Encryption password set to: " << passwd << endl;
+    key -> Set_Passwd(passwd);
+    cout << "Encryption password set to: " << passwd << endl;
 }
 
 void Connector :: set_msg_size (int size) {
+
+    size+= 9; // compensates for the CRC and end of string char;
+    // the user will only be able to use [size] bytes of the send/rcv buffer
+
     char buf_tmp[msg_size];
     memcpy(buf_tmp, buf, msg_size);
     msg_size = size;
@@ -131,5 +146,5 @@ void Connector :: set_msg_size (int size) {
 }
 
 int Connector :: get_msg_size () {
-	return msg_size;
+    return msg_size-9; // return how many bytes the user may send as data
 }
