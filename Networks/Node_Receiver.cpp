@@ -63,9 +63,10 @@ void Node_Receiver::validateConnection() {
         cout << "Nonce validation failed!" << endl
                 << "Expected: " << f(nonce2) << endl
                 << "Received: " << n2f << endl;
+        exit(1);
     } else {
         cout << "Nonce " << n2f << " successfully validated!" << endl <<
-                "Handshaking complete. Begin secure file transmission." << endl;
+                "Handshaking complete. Listening for protocol data..." << endl;
         c->send("ack"); // ack the handshaking
     }
 
@@ -77,6 +78,48 @@ void Node_Receiver::validateConnection() {
      * Send an ack back.
      */
 
+    // packet should have 10 useful bytes:
+    // [1 |  4  |  4  ]
+    // [protocol |    pkt size     |     window_size]
+    char proto = 'x';
+    int pkt_size = 0;
+    int window_size = 0;
+
+    c->listen();
+    memcpy(&proto, c->get_msg(), 1);
+    memcpy(&pkt_size, &c->get_msg()[1], sizeof(int));
+    memcpy(&window_size, &c->get_msg()[5], sizeof(int));
+
+    cout << "Protocol data received: \n" <<
+            "Protocol: " << proto << endl <<
+            "Packet size: " << pkt_size << endl <<
+            "Window size: " << window_size << endl;
+
+    if (proto = 'w') { // stop and wait
+        // create this Transfer Protocol object
+
+        // send validation
+        c->send(c->get_msg()); // send the exact same thing back.
+
+        // run the protocol
+
+
+    } else if (proto = 'g') { // go back n
+        // create this Transfer Protocol object
+
+        // send validation
+        c->send(c->get_msg()); // send the exact same thing back.
+
+        // run the protocol
+    } else if (proto = 's') { // selective repeat
+        // create this Transfer Protocol object
+
+        // send validation
+        c->send(c->get_msg()); // send the exact same thing back.
+        
+        // run the protocol
+    }
+    
     
 }
 

@@ -36,7 +36,7 @@ public:
 	void send (char *);
         void send_unencrypted(char*);
 
-	void listen ();
+	bool listen (); // returns false if a damaged packet is detected.
 	char * get_msg ();
 	void set_key (char *);
 	void set_msg_size (int);
