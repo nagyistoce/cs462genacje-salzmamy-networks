@@ -84,7 +84,8 @@ void CCRC32::PartialCRC(unsigned long *ulCRC, const unsigned char *sData, unsign
         //    occurrence of *ulCRC with "((unsigned long)*ulCRC)" or "*(unsigned long *)ulCRC".
 
          *(unsigned long *)ulCRC =
-            ((*(unsigned long *)ulCRC) >> 8) ^ this->ulTable[((*(unsigned long *)ulCRC) & 0xFF) ^ *sData++];
+            ((*(unsigned long *)ulCRC) >> 8)
+                 ^ this->ulTable[((*(unsigned long *)ulCRC) & 0xFF) ^ *sData++];
     }
 }
 

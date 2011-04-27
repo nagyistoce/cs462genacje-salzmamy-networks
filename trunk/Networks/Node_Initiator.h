@@ -32,13 +32,7 @@ private:
     char EKb_Ks[64];
     char keyS[KEYSIZE];
 
-    //////////////////////
-    // transmission data
     
-    // 'w' = stop and wait, 'g' = go back n, 's' = selective repeat
-    char protocol;
-    int packet_size;
-    //////////////////////
 };
 
 #endif	/* _NODE_INITIATOR_H */

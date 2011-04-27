@@ -27,24 +27,16 @@ int main(void) {
 
     char role = ask_role();
 
-    // example for KDC:
-    // Node kdc = Node_KDC(c);
-    // kdc.listen();
-
     Connector *c;
 
-
     if (role == 'k') {
+
         c = new Connector(PORT); // listening constructor
         Node_KDC kdc = Node_KDC(c);
-
-
         kdc.listen();
 
-    } else if (role == 'i') {
-        // initiator:
-
-
+    } else if (role == 'i') { // initiator:
+        
         // get KDC URL
         char kdc[128];
         memset(kdc, '\0', 128);
@@ -87,8 +79,6 @@ int main(void) {
         perror("incorrect role input");
         exit(1);
     }
-
-    //delete c;
 
     return 0;
 }

@@ -26,10 +26,10 @@ Node_Initiator::~Node_Initiator() {
 void Node_Initiator::send_request() {
     nonce = 0;
     getNonce(&nonce, "Enter a nonce: ");
-    char msg[64];
+    char msg[1024];
+    memset(msg, '\0', 1024);
 
     // copy the nonce into the request
-    cout << "sizeof(long) = " << sizeof(long) << endl;
     memcpy(msg, &nonce, sizeof(long));
     //char* request = "Requesting session key...";
     //memcpy(&msg[8], request, strlen(request));
@@ -130,11 +130,11 @@ void Node_Initiator::handshake() {
 }
 
 
-/* TODO: Get packet size from user
+/* Get packet size from user
      * Send the packet size to the receiver and get an ack back.
      * Set the connector's msg size variable to the right length
      * (make sure it can hold a crc too!)
-     * TODO: Get transmission method from user (s&g / gbn / sr)
+     * Get transmission method from user (s&g / gbn / sr)
      * Receive ack for transmission method
      */
 
@@ -146,42 +146,73 @@ void Node_Initiator::get_transmission_data() {
             "'w' = stop and wait" << endl <<
             "'g' = go back n" << endl <<
             "'s' = selective repeat" << endl;
+    char protocol = 'x';
+    int packet_size = -1;
+    int window_size = -1;
+
     while (protocol != 'w' && protocol != 'g' && protocol != 's') {
         cin.ignore(1024, '\n');
         cin >> protocol;
     }
 
-    packet_size = -1;
+    
     while (!( (packet_size > 0) && (packet_size < 64) ) ) {
         getInt(&packet_size,
                 "Enter a packet size (in kb) between 1 and 63: ");
     }
     packet_size = packet_size*1024;
 
-    char msg[13];
-    memset(msg, '\0', 17);
+    char msg[10];
+    memset(msg, '\0', 10);
 
     // transmission_data_packet will look like:
     // [protocol |  packet_size   |   window_size(if go back n or sel repeat)]
-    memcpy(msg, (void*)&protocol, 1); // fill first bit with the protocol
-    memcpy(msg, (void*)&packet_size, sizeof(int));
+    memcpy(msg, (void*)&protocol, 1); // fill byte 0 with the protocol
+    memcpy(&msg[1], (void*)&packet_size, sizeof(int)); // bytes 1-4 = pkt size
+    
     if (protocol == 'w') {
         // have all the data we need - let the receiver know of our choices
         c->send(msg);
 
-
         // listen for a response with the same content
-        
-
-
         c->listen();
-        char temp[17];
-        memcpy(temp, c->get_msg(), 17);
+        char temp[10];
+        memcpy(temp, c->get_msg(), 10);
         // validate
 
         // make TransferProtocol object, run the protocol
 
+        c->set_msg_size(packet_size);
+
+    } else {
+        while (!( (window_size > 0) && (window_size < 51) ) ) {
+        getInt(&window_size,
+                "Enter a window size between 1 and 50: ");
+        memcpy(&msg[5], window_size, sizeof(int)); // fill last slot in packet
+        c->send(msg);
+
+        // listen for a response with the same content
+        c->listen();
+        char temp[10];
+        memcpy(temp, c->get_msg(), 10);
+        // validate
+
+        if (protocol == 'g') { // go back n
+
+            // make a Transfer Protocol object
+            
+            // run this protocol
+
+        } else if (protocol = 's') { // selective repeat
+
+            // make a Transfer Protocol object
+
+            // run this protocol
+
+
+        }
     }
+   }
 
 
 }
