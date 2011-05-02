@@ -7,12 +7,13 @@ Connector :: Connector () {
 Connector :: Connector (int port_num) {
     crc = new CCRC32();
     crc->Initialize();
+    print_encrypted = false;
     addr_len = sizeof (struct sockaddr);
     numbytes = 0;
     port = port_num;
     he = NULL;
     key = new Blowfish ();
-    msg_size = 1024+9; // default size for establishing connection
+    msg_size = DEFAULTPKTSIZE +9; // default size for establishing connection
     memset(buf, '\0', MAXPKTSIZE); // edited
 
     my_addr.sin_family = AF_INET; // host byte order
@@ -37,11 +38,12 @@ Connector :: Connector (int port_num) {
 Connector :: Connector (char * receiver, int port_num) {
     crc = new CCRC32();
     crc->Initialize();
+    print_encrypted = false;
     numbytes = 0;
     port = port_num;
     addr_len = sizeof (struct sockaddr);
     key = new Blowfish ();
-    msg_size = 1024+9; // default size for establishing connection
+    msg_size = DEFAULTPKTSIZE+9; // default size for establishing connection
     memset(buf, '\0', MAXPKTSIZE); // edited
 
     my_addr.sin_family = AF_INET; // host byte order
@@ -73,21 +75,22 @@ Connector :: ~Connector () {
 }
 
 bool Connector :: listen () {
-
     memset(buf, '\0', msg_size);
-    
+  
     if ((numbytes = recvfrom (sockfd, buf, msg_size, 0, (struct sockaddr *) & their_addr, (socklen_t *) & addr_len)) == -1) {
         cout << "Error in listen(): Failed to receive. Terminating...\n";
         exit (1);
     }
 
-    //cout << "Before decrypting: " << buf << endl;
+    if (print_encrypted) {
+        cout << "Encrypted message received: " << buf << endl;
+    }
+
     key -> Decrypt((void *) buf, msg_size);
     buf [numbytes] = '\0';
 
     cout << "Decrypted message received: " << buf << endl;
-    //printf ("From %s\n", inet_ntoa (their_addr.sin_addr));
-    //printf ("%d bytes long\n", numbytes);
+    //printf ("%d bytes received\n", numbytes);
 
 
     // CRC
@@ -104,7 +107,7 @@ bool Connector :: listen () {
         cout << "CRC: Valid packet!" << endl;
         return true;
     } else {
-        cout << "Invalid packet... ok if cross architecture." << endl;
+        cout << "Invalid packet... may be valid if cross architecture." << endl;
         return false;
     }
     
@@ -122,10 +125,14 @@ void Connector :: send (char * msg) {
     memcpy(&msg_copy[msg_size-9], &c, sizeof(long)); // fill in the crc slot
 
     cout << "Unencrypted message to send: " << msg_copy << endl;
+
     //cout << "CRC value: " << (unsigned long)c << endl;
         
     key -> Encrypt((void *) msg_copy, msg_size);
-    //cout << "Encrypted message to send: " << msg_copy << endl;
+
+    if (print_encrypted) {
+       cout << "Encrypted message to send: " << msg_copy << endl;
+    }
 
     if ((numbytes = sendto(sockfd, msg_copy, msg_size, 0, (struct sockaddr *)
             & their_addr, sizeof (struct sockaddr))) == -1) {
@@ -161,6 +168,15 @@ char * Connector :: get_msg () {
     return buf;
 }
 
+void Connector::set_print_encrypted(bool print) {
+    print_encrypted = print;
+    if (print) {
+        cout << "Connector: Encrypted sends and receives will be displayed.\n";
+    } else {
+        cout << "Connector: Encrypted data will not be displayed.\n";
+    }
+}
+
 void Connector :: set_key (char * passwd) {
     key -> Set_Passwd(passwd);
     cout << "Encryption password set to: " << passwd << endl;
@@ -168,8 +184,14 @@ void Connector :: set_key (char * passwd) {
 
 void Connector :: set_msg_size (int size) {
 
-    msg_size = (size+ 9); // compensates for the CRC and end of string char;
+    if (size+9 > MAXPKTSIZE) {
+        cout << "Error! Packet size too high... aborting..." << endl;
+        exit(1);
+    }
+
     // the user will only be able to use [size] bytes of the send/rcv buffer
+    msg_size = (size+ 9); // compensates for the CRC and end of string char;
+    
 
 }
 

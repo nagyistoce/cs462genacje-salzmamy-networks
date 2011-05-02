@@ -39,6 +39,12 @@ void Node::getInt(int* intToGet, char* prompt) {
     cin >>*intToGet;
 }
 
+void Node::getLong(long* longToGet, char* prompt) {
+    cout << prompt << endl;
+    cin.ignore(1024, '\n');
+    cin >>*longToGet;
+}
+
 void Node::getNonce(long* nonce, char* msg) {
 
 

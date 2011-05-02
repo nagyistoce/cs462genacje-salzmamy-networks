@@ -17,21 +17,18 @@ public:
 
     void send_request();
     void get_kdc_response();
-
     void send_session_key();
+    
 private:
 
     void handshake();
-    void get_transmission_data();
+    void transmission();
 
-    // char kdcURL[128];
     char receiverURL[128];
-
     long nonce;
     char keyA[KEYSIZE];
     char EKb_Ks[64];
     char keyS[KEYSIZE];
-
     
 };
 

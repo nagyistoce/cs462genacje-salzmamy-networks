@@ -21,12 +21,9 @@ private:
     /*~protocol methods~*/
     // called from within listen
     // when a request comes in
-    void validateConnection(); // sends a nonce, then validates it
-    
-
+    void validate_connection(); // sends a nonce, then validates it
+    void start_protocol(); // listens for the protocol packet
     /*~~~~~~~~~~~~~~~~~~*/
-
-    
 
     char keyB[KEYSIZE];
     char keyS[KEYSIZE];

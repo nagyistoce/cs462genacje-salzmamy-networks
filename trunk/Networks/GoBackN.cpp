@@ -124,8 +124,6 @@ void GoBackN::run_sender() {
                         file_read = true;
                         // reset window size to be smaller!
                         window_size = i;
-                        // max packet received is set
-                        max_packet_id = tmp_last_received+i;
 
                         // brk
                         i = window_size;
@@ -137,7 +135,8 @@ void GoBackN::run_sender() {
             // file_read to prevent packet_window from getting cleared.
             if (file_to_send.eof()) {
                 file_read = true;
-                max_packet_id = lowest_ack_received + window_size;
+                // set max packet id so we can end
+                memcpy(&max_packet_id, data_window[window_size-1], sizeof(long));
             }
      
 

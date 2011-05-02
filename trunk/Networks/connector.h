@@ -26,6 +26,7 @@
 // this is the size of the buf array; the packet will be taken from 
 // and inserted into this array up to the pkt_size index.
 #define MAXPKTSIZE ((63*1024)+9)
+#define DEFAULTPKTSIZE 1024
 
 using namespace std;
 
@@ -43,6 +44,7 @@ public:
 
 	bool listen (); // returns false if a damaged packet is detected.
 	char * get_msg ();
+        void set_print_encrypted(bool print); 
 	void set_key (char *);
 	void set_msg_size (int);
 	int get_msg_size ();
@@ -52,6 +54,9 @@ private:
         CCRC32* crc;
 	struct sockaddr_in their_addr; // connectors address information
 	struct sockaddr_in my_addr; // my address information
+
+        bool print_encrypted;
+
 	int sockfd;
 	int numbytes;
 	int port;
