@@ -15,7 +15,7 @@ RANLIB=ranlib
 CC=gcc
 CCC=g++
 CXX=g++
-FC=g77
+FC=
 AS=as
 
 # Macros
@@ -32,12 +32,16 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/blowfish.o \
+	${OBJECTDIR}/SelectiveRepeat.o \
 	${OBJECTDIR}/Node_Initiator.o \
 	${OBJECTDIR}/Node.o \
 	${OBJECTDIR}/Node_Receiver.o \
 	${OBJECTDIR}/endian.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/GoBackN.o \
 	${OBJECTDIR}/connector.o \
+	${OBJECTDIR}/Packet.o \
+	${OBJECTDIR}/crc.o \
 	${OBJECTDIR}/Node_KDC.o
 
 # C Compiler Flags
@@ -69,6 +73,11 @@ ${OBJECTDIR}/blowfish.o: nbproject/Makefile-${CND_CONF}.mk blowfish.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/blowfish.o blowfish.cpp
 
+${OBJECTDIR}/SelectiveRepeat.o: nbproject/Makefile-${CND_CONF}.mk SelectiveRepeat.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/SelectiveRepeat.o SelectiveRepeat.cpp
+
 ${OBJECTDIR}/Node_Initiator.o: nbproject/Makefile-${CND_CONF}.mk Node_Initiator.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
@@ -94,10 +103,25 @@ ${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
+${OBJECTDIR}/GoBackN.o: nbproject/Makefile-${CND_CONF}.mk GoBackN.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/GoBackN.o GoBackN.cpp
+
 ${OBJECTDIR}/connector.o: nbproject/Makefile-${CND_CONF}.mk connector.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/connector.o connector.cpp
+
+${OBJECTDIR}/Packet.o: nbproject/Makefile-${CND_CONF}.mk Packet.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Packet.o Packet.cpp
+
+${OBJECTDIR}/crc.o: nbproject/Makefile-${CND_CONF}.mk crc.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/crc.o crc.cpp
 
 ${OBJECTDIR}/Node_KDC.o: nbproject/Makefile-${CND_CONF}.mk Node_KDC.cpp 
 	${MKDIR} -p ${OBJECTDIR}
