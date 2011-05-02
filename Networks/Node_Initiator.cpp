@@ -7,27 +7,25 @@
 
 #include "Node_Initiator.h"
 
+
 Node_Initiator::Node_Initiator(Connector* c) : Node(c) {
-    cout << "Node_Initiator (child) constructor." << endl;
+    cout << "\n\n~~Initiator~~\n\n";
 
-    
-
-    //getStr(kdcURL, 128, "Enter the url of the KDC: \n");
     getStr(keyA, KEYSIZE, "Enter Ka:");
-
     c->set_key(keyA);
 
 }
 
 
 Node_Initiator::~Node_Initiator() {
+    // no new'd things to delete
 }
 
 void Node_Initiator::send_request() {
     nonce = 0;
     getNonce(&nonce, "Enter a nonce: ");
-    char msg[1024];
-    memset(msg, '\0', 1024);
+    char msg[DEFAULTPKTSIZE];
+    memset(msg, '\0', DEFAULTPKTSIZE);
 
     // copy the nonce into the request
     memcpy(msg, &nonce, sizeof(long));
@@ -51,13 +49,9 @@ void Node_Initiator::get_kdc_response() {
 
     c->listen();
 
-    
-    char* msg = c->get_msg();
-
-
     // copy the nonce and validate it
     long checkNonce = 0;
-    memcpy(&checkNonce, msg, sizeof(long));
+    memcpy(&checkNonce, c->get_msg(), sizeof(long));
 
     if (validate(checkNonce, nonce)) {
         cout << "Nonce: " << nonce << " validated!" << endl;
@@ -71,14 +65,14 @@ void Node_Initiator::get_kdc_response() {
 
     // copy 56 bytes starting at index 8
     memset(keyS, '\0', KEYSIZE);
-    memcpy(keyS, &msg[8], KEYSIZE);
+    memcpy(keyS, &c->get_msg()[8], KEYSIZE);
 
     cout << "Ks received: " << keyS << endl;
 
 
     // copy 56 bytes from index 64 EKb(Ks)
     memset(EKb_Ks, '\0', KEYSIZE);
-    memcpy(EKb_Ks, &msg[64], KEYSIZE);
+    memcpy(EKb_Ks, &c->get_msg()[64], KEYSIZE);
 
     
     return;
@@ -126,29 +120,43 @@ void Node_Initiator::handshake() {
         cout << "***Key exchange complete***\n" << endl;
     }
 
-    get_transmission_data();
+    transmission();
 }
 
 
-/* Get packet size from user
-     * Send the packet size to the receiver and get an ack back.
-     * Set the connector's msg size variable to the right length
-     * (make sure it can hold a crc too!)
-     * Get transmission method from user (s&g / gbn / sr)
-     * Receive ack for transmission method
+/* Send    transmission protocol
+     *     packet size
+     *     window size
+     *     file name
+     *
+     * -Receive validation.
+     * -Transmit the file.
      */
 
-void Node_Initiator::get_transmission_data() {
+void Node_Initiator::transmission() {
 
     cout << "Obtaining transmission data from user...\n" << endl;
 
-    cout << "Enter a protocol: " << endl <<
-            "'w' = stop and wait" << endl <<
-            "'g' = go back n" << endl <<
-            "'s' = selective repeat" << endl;
+
+    // packet should have 141 useful bytes:
+    // [    1    |      4      |       8       |      128        ]
+    // [protocol |  pkt size   |  window_size  |      fname      ]
     char protocol = 'x';
     int packet_size = -1;
-    int window_size = -1;
+    long window_size = 0;
+    char filename[133];
+    memset(filename, '\0', 133);
+    memcpy(filename, "Send/", 5);
+
+    do {
+        getStr(&filename[5], 128,
+          "Enter the name of a file in the cwd/'Send' folder: ");
+    } while(strcmp(&filename[5], "") == 0);
+
+    cout << "Enter a protocol: " << endl <<
+            "  'w' = stop and wait" << endl <<
+            "  'g' = go back n" << endl <<
+            "  's' = selective repeat" << endl;
 
     while (protocol != 'w' && protocol != 'g' && protocol != 's') {
         cin.ignore(1024, '\n');
@@ -162,58 +170,66 @@ void Node_Initiator::get_transmission_data() {
     }
     packet_size = packet_size*1024;
 
-    char msg[10];
-    memset(msg, '\0', 10);
+    char transmit_packet[DEFAULTPKTSIZE];
+    memset(transmit_packet, '\0', DEFAULTPKTSIZE);
 
     // transmission_data_packet will look like:
-    // [protocol |  packet_size   |   window_size(if go back n or sel repeat)]
-    memcpy(msg, (void*)&protocol, 1); // fill byte 0 with the protocol
-    memcpy(&msg[1], (void*)&packet_size, sizeof(int)); // bytes 1-4 = pkt size
+    // [protocol |  packet_size   |   window_size | file_name]
+    memcpy(transmit_packet, (void*)&protocol, 1); // fill byte 0 with the protocol
+    memcpy(&transmit_packet[1], (void*)&packet_size, sizeof(int)); // bytes 1-4 = pkt size
+    memcpy(&transmit_packet[13], &filename[5], 128); // filename
     
     if (protocol == 'w') {
-        // have all the data we need - let the receiver know of our choices
-        c->send(msg);
 
-        // listen for a response with the same content
+        // have all the data we need - let the receiver know of our choices
+        c->send(transmit_packet);
+        
+
+        // VALIDATE //
         c->listen();
-        char temp[10];
-        memcpy(temp, c->get_msg(), 10);
-        // validate
+        cout << "Transmission protocol acked." << endl;
 
         // make TransferProtocol object, run the protocol
+        c->set_msg_size(packet_size);
+        StopAndWait sw = StopAndWait(c, packet_size, filename);
+        sw.run_sender();
+        
+
+    } else { // the other two protocols need window size
+
+        while (!( (window_size > 0) && (window_size < 51) ) ) {
+            getLong(&window_size,
+                "Enter a window size between 1 and 50: ");
+        }
+        memcpy(&transmit_packet[5], &window_size, sizeof(long)); // fill last slot in packet
+        c->send(transmit_packet);
+
+
+        // VALIDATE //
+        c->listen();
+        cout << "Transmission protocol acked." << endl;
+        
+        
+        
 
         c->set_msg_size(packet_size);
 
-    } else {
-        while (!( (window_size > 0) && (window_size < 51) ) ) {
-        getInt(&window_size,
-                "Enter a window size between 1 and 50: ");
-        memcpy(&msg[5], window_size, sizeof(int)); // fill last slot in packet
-        c->send(msg);
-
-        // listen for a response with the same content
-        c->listen();
-        char temp[10];
-        memcpy(temp, c->get_msg(), 10);
-        // validate
-
         if (protocol == 'g') { // go back n
 
-            // make a Transfer Protocol object
-            
-            // run this protocol
+            // create this Transfer Protocol object
+            GoBackN gbn = GoBackN(c, packet_size, filename, window_size);
+            // run the protocol
+            gbn.run_sender();
 
         } else if (protocol = 's') { // selective repeat
 
-            // make a Transfer Protocol object
+            // create this Transfer Protocol object
+            cout << "Selective repeat: todo..." << endl;
+            // run the protocol
 
-            // run this protocol
 
-
-        }
+       }
     }
-   }
-
-
 }
+
 

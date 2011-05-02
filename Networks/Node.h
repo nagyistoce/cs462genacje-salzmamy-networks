@@ -10,7 +10,10 @@
 
 #define KEYSIZE 56 // max blowfish pw length
 
+
 #include "Connector.h"
+#include "StopAndWait.h"
+#include "GoBackN.h"
 
 #include <iostream>
 using namespace std;
@@ -21,6 +24,7 @@ public:
     virtual ~Node();
     static void getStr(char* strToGet, int size, char* prompt);
     static void getInt(int* intToGet, char* prompt);
+    static void getLong(long* longToGet, char* prompt);
     void newConnector(Connector* newC);
     static long f(long nonce);
 protected:
