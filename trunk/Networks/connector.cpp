@@ -12,8 +12,8 @@ Connector :: Connector (int port_num) {
     port = port_num;
     he = NULL;
     key = new Blowfish ();
-    msg_size = 1024+9;
-    buf = new char[msg_size];
+    msg_size = 1024+9; // default size for establishing connection
+    memset(buf, '\0', MAXPKTSIZE); // edited
 
     my_addr.sin_family = AF_INET; // host byte order
     my_addr.sin_port = htons (port); // short, network byte order
@@ -41,8 +41,8 @@ Connector :: Connector (char * receiver, int port_num) {
     port = port_num;
     addr_len = sizeof (struct sockaddr);
     key = new Blowfish ();
-    msg_size = 1024+9;
-    buf = new char[msg_size];
+    msg_size = 1024+9; // default size for establishing connection
+    memset(buf, '\0', MAXPKTSIZE); // edited
 
     my_addr.sin_family = AF_INET; // host byte order
     my_addr.sin_port = htons(port); // short, network byte order
@@ -69,9 +69,9 @@ Connector :: ~Connector () {
     close (sockfd);
     delete (key);
     delete (crc);
-    delete [] buf;
+    // delete [] buf; // buf is not newed anymore
 }
-/* TODO: FINISH CRC IN LISTEN AND SEND METHODS */
+
 bool Connector :: listen () {
 
     memset(buf, '\0', msg_size);
@@ -87,7 +87,7 @@ bool Connector :: listen () {
 
     cout << "Decrypted message received: " << buf << endl;
     //printf ("From %s\n", inet_ntoa (their_addr.sin_addr));
-    printf ("%d bytes long\n", numbytes);
+    //printf ("%d bytes long\n", numbytes);
 
 
     // CRC
@@ -96,12 +96,12 @@ bool Connector :: listen () {
     unsigned long expected_crc = crc->FullCRC((const unsigned char*)buf, (unsigned long) msg_size-9);
 
     
-    cout << "CRC received: " << received_crc << endl;
-    cout << "CRC expected: " << expected_crc << endl;
+    //cout << "CRC received: " << received_crc << endl;
+    //cout << "CRC expected: " << expected_crc << endl;
 
 
     if (received_crc == expected_crc) {
-        cout << "Valid packet!" << endl;
+        cout << "CRC: Valid packet!" << endl;
         return true;
     } else {
         cout << "Invalid packet... ok if cross architecture." << endl;
@@ -117,13 +117,12 @@ void Connector :: send (char * msg) {
     memcpy (msg_copy, msg, msg_size-9);
 
     // CRC before we encrypt and send...
-    
     unsigned long c = crc->FullCRC((const unsigned char*)msg_copy, (unsigned long) msg_size-9);
     
     memcpy(&msg_copy[msg_size-9], &c, sizeof(long)); // fill in the crc slot
 
     cout << "Unencrypted message to send: " << msg_copy << endl;
-    cout << "CRC value: " << (unsigned long)c << endl;
+    //cout << "CRC value: " << (unsigned long)c << endl;
         
     key -> Encrypt((void *) msg_copy, msg_size);
     //cout << "Encrypted message to send: " << msg_copy << endl;
@@ -133,7 +132,7 @@ void Connector :: send (char * msg) {
         cout << "Error in send(): Failed to send. Terminating...\n";
         exit(1);
     }
-    cout << numbytes << " bytes sent." << endl;
+    //cout << numbytes << " bytes sent." << endl;
 }
 
 void Connector :: send_unencrypted (char * msg) {
@@ -149,8 +148,8 @@ void Connector :: send_unencrypted (char * msg) {
 
     memcpy(&msg_copy[msg_size-9], &c, sizeof(long)); // fill in the crc slot
 
-    cout << "Unencrypted message to send: " << msg_copy << endl;
-    cout << "CRC value: " << c << endl;
+    
+    //cout << "CRC value: " << c << endl;
 
     if ((numbytes = sendto(sockfd, msg_copy, msg_size, 0, (struct sockaddr *) & their_addr, sizeof (struct sockaddr))) == -1) {
         cout << "Error in send_unencrypted(): Failed to send. Terminating...\n";
@@ -169,15 +168,9 @@ void Connector :: set_key (char * passwd) {
 
 void Connector :: set_msg_size (int size) {
 
-    size+= 9; // compensates for the CRC and end of string char;
+    msg_size = (size+ 9); // compensates for the CRC and end of string char;
     // the user will only be able to use [size] bytes of the send/rcv buffer
 
-    char buf_tmp[msg_size];
-    memcpy(buf_tmp, buf, msg_size);
-    msg_size = size;
-    delete [] buf;
-    buf = new char[msg_size];
-    memcpy(buf, buf_tmp, msg_size);
 }
 
 int Connector :: get_msg_size () {
