@@ -9,11 +9,12 @@
 
 
 Node_Receiver::Node_Receiver(Connector* c) : Node(c){
-    cout << "Node_Receiver (child class) constructor called." << endl;
+    cout << "\n\n~~Receiver~~\n\n";
     
     getStr(keyB, KEYSIZE, "Enter K(b):");
 
     c->set_key(keyB);
+    
 }
 
 Node_Receiver::~Node_Receiver() {
@@ -25,14 +26,16 @@ void Node_Receiver::listen() {
 
     c->listen();
 
-    //char msg[64];
-    memset(keyS, '\0', 64);
-    memcpy(keyS, c->get_msg(), 64);
+    char msg[64];
+    memset(msg, '\0', 64);
+    memcpy(msg, c->get_msg(), 64);
 
-    //strcpy(keyS, msg);
+    memset(keyS, '\0', KEYSIZE);
+    strcpy(keyS, msg);
 
     cout << "Received Ks: " << keyS << endl;
-    
+    c->set_key(keyS);
+    cout << "\nHandshaking..." << endl << endl;
 
 
     validate_connection();
@@ -41,8 +44,7 @@ void Node_Receiver::listen() {
 
 void Node_Receiver::validate_connection() {
 
-    c->set_key(keyS);
-    cout << "\nHandshaking..." << endl << endl;
+    
 
     nonce2 = 0;
     getNonce(&nonce2, "Enter a nonce: ");

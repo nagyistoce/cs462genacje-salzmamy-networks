@@ -25,7 +25,8 @@
 // 63 kb packet + 8 byte long checksum
 // this is the size of the buf array; the packet will be taken from 
 // and inserted into this array up to the pkt_size index.
-#define MAXPKTSIZE ((63*1024)+9)
+#define TAILSIZE 16
+#define MAXPKTSIZE ((63*1024)+TAILSIZE)
 #define DEFAULTPKTSIZE 1024
 
 using namespace std;

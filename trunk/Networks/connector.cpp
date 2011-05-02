@@ -13,7 +13,7 @@ Connector :: Connector (int port_num) {
     port = port_num;
     he = NULL;
     key = new Blowfish ();
-    msg_size = DEFAULTPKTSIZE +9; // default size for establishing connection
+    msg_size = DEFAULTPKTSIZE +TAILSIZE; // default size for establishing connection
     memset(buf, '\0', MAXPKTSIZE); // edited
 
     my_addr.sin_family = AF_INET; // host byte order
@@ -43,7 +43,7 @@ Connector :: Connector (char * receiver, int port_num) {
     port = port_num;
     addr_len = sizeof (struct sockaddr);
     key = new Blowfish ();
-    msg_size = DEFAULTPKTSIZE+9; // default size for establishing connection
+    msg_size = DEFAULTPKTSIZE+TAILSIZE; // default size for establishing connection
     memset(buf, '\0', MAXPKTSIZE); // edited
 
     my_addr.sin_family = AF_INET; // host byte order
@@ -82,9 +82,11 @@ bool Connector :: listen () {
         exit (1);
     }
 
+    /*
     if (print_encrypted) {
         cout << "Encrypted message received: " << buf << endl;
     }
+     */
 
     key -> Decrypt((void *) buf, msg_size);
     buf [numbytes] = '\0';
@@ -95,8 +97,8 @@ bool Connector :: listen () {
 
     // CRC
     unsigned long received_crc = 0;
-    memcpy(&received_crc, &buf[msg_size-9], sizeof(unsigned long));
-    unsigned long expected_crc = crc->FullCRC((const unsigned char*)buf, (unsigned long) msg_size-9);
+    memcpy(&received_crc, &buf[msg_size-TAILSIZE], sizeof(unsigned long));
+    unsigned long expected_crc = crc->FullCRC((const unsigned char*)buf, (unsigned long) msg_size-TAILSIZE);
 
     
     //cout << "CRC received: " << received_crc << endl;
@@ -117,12 +119,12 @@ bool Connector :: listen () {
 void Connector :: send (char * msg) {
     char msg_copy [msg_size];
     memset(msg_copy, '\0', msg_size); // clear it out.
-    memcpy (msg_copy, msg, msg_size-9);
+    memcpy (msg_copy, msg, msg_size-TAILSIZE);
 
     // CRC before we encrypt and send...
-    unsigned long c = crc->FullCRC((const unsigned char*)msg_copy, (unsigned long) msg_size-9);
+    unsigned long c = crc->FullCRC((const unsigned char*)msg_copy, (unsigned long) msg_size-TAILSIZE);
     
-    memcpy(&msg_copy[msg_size-9], &c, sizeof(long)); // fill in the crc slot
+    memcpy(&msg_copy[msg_size-TAILSIZE], &c, sizeof(long)); // fill in the crc slot
 
     cout << "Unencrypted message to send: " << msg_copy << endl;
 
@@ -130,9 +132,10 @@ void Connector :: send (char * msg) {
         
     key -> Encrypt((void *) msg_copy, msg_size);
 
+    /*
     if (print_encrypted) {
        cout << "Encrypted message to send: " << msg_copy << endl;
-    }
+    }*/
 
     if ((numbytes = sendto(sockfd, msg_copy, msg_size, 0, (struct sockaddr *)
             & their_addr, sizeof (struct sockaddr))) == -1) {
@@ -146,14 +149,14 @@ void Connector :: send_unencrypted (char * msg) {
     
     char msg_copy [msg_size];
     memset(msg_copy, '\0', msg_size); // clear it out.
-    memcpy (msg_copy, msg, msg_size-9); // copy user's msg
+    memcpy (msg_copy, msg, msg_size-TAILSIZE); // copy user's msg
 
     cout << "Unencrypted message to send: " << msg_copy << endl;
 
     // CRC before we send...
-    unsigned long c = crc->FullCRC((const unsigned char*)msg_copy, (unsigned long) msg_size-9);
+    unsigned long c = crc->FullCRC((const unsigned char*)msg_copy, (unsigned long) msg_size-TAILSIZE);
 
-    memcpy(&msg_copy[msg_size-9], &c, sizeof(long)); // fill in the crc slot
+    memcpy(&msg_copy[msg_size-TAILSIZE], &c, sizeof(long)); // fill in the crc slot
 
     
     //cout << "CRC value: " << c << endl;
@@ -184,17 +187,17 @@ void Connector :: set_key (char * passwd) {
 
 void Connector :: set_msg_size (int size) {
 
-    if (size+9 > MAXPKTSIZE) {
+    if (size+TAILSIZE > MAXPKTSIZE) {
         cout << "Error! Packet size too high... aborting..." << endl;
         exit(1);
     }
 
     // the user will only be able to use [size] bytes of the send/rcv buffer
-    msg_size = (size+ 9); // compensates for the CRC and end of string char;
+    msg_size = (size+ TAILSIZE); // compensates for the CRC and end of string char;
     
 
 }
 
 int Connector :: get_msg_size () {
-    return msg_size-9; // return how many bytes the user may send as data
+    return msg_size-TAILSIZE; // return how many bytes the user may send as data
 }
