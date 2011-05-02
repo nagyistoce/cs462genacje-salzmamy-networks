@@ -22,6 +22,11 @@
 #include "blowfish.h"
 #include "crc.h"
 
+// 63 kb packet + 8 byte long checksum
+// this is the size of the buf array; the packet will be taken from 
+// and inserted into this array up to the pkt_size index.
+#define MAXPKTSIZE ((63*1024)+9)
+
 using namespace std;
 
 
@@ -54,7 +59,7 @@ private:
 	int msg_size; // Important: this is larger than the user's msg size to
         // fit the CRC at the end!
 	struct hostent * he;
-	char *buf;
+	char buf[MAXPKTSIZE];
 };
 
 #endif /* CONNECTOR_H_ */
