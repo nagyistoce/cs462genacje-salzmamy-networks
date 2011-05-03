@@ -47,6 +47,7 @@ void StopAndWait::run_sender() {
     pthread_t listenthread; // thread for listening
     ack_id = -1;
 
+    metrics.start_timer(); // START TIMER //
 
     int attempts = 0;
     // Read data from file:
@@ -88,6 +89,7 @@ void StopAndWait::run_sender() {
                 attempts++;
                 pthread_cancel(listenthread);
                 cout << "Packet " << pkt_id << " timed out. Resending..." << endl;
+                metrics.increment_lost_pkts(1); // LOST A PACKET
             }
 
         }while(!pkt_sent);
@@ -98,11 +100,19 @@ void StopAndWait::run_sender() {
         memset(data, '\0', packet_size);
     }
 
+    metrics.end_timer(); // END TIMER
+    metrics.set_total_pkts(pkt_id+1); // SET TOTAL PACKETS = the last ID +1
+    metrics.set_total_bytes_sent((pkt_id+1)*(packet_size-HEADERSIZE));
+    // SET BYTES SENT: = number of packets sent * packet_size-HEADERSIZE
+
+
     // end transmission
     cout << "File sent... sending termination packet..." << endl;
-    sleep(1);
     memcpy(data, "/&&", 3);
     c->send(data);
+
+    // FINALLY, PRINT THE METRIC INFO
+    metrics.print_stats();
 
 }
 

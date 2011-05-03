@@ -61,12 +61,9 @@ int main(void) {
 
         // send encrypted ks to reciever
         ini.send_session_key(); // also handles the receiver response
-
-
-        // get file name
-
-        // sendFile
-
+        // chain calls to send the file too.
+        delete c2;
+        
     } else if (role == 'r') {
         // receiver:
         c = new Connector(PORT); // listening constructor
@@ -80,6 +77,7 @@ int main(void) {
         exit(1);
     }
 
+    delete c;
     return 0;
 }
 

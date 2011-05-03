@@ -69,6 +69,7 @@ void GoBackN::run_sender() {
     int iterations = 0;
     bool done = false;
     bool file_read = false;
+    metrics.start_timer();
     while(!done) {
 
         cout << "\n~~~~~Round: " << iterations << "~~~~~" <<endl;
@@ -161,6 +162,7 @@ void GoBackN::run_sender() {
         // number to repeat
         repeat_num = last_id_sent - tmp_last_received;
         cout << "Number of packets to resend from this round: " << repeat_num << endl;
+        metrics.increment_lost_pkts(repeat_num); // LOST N PACKETS
         if (repeat_num > 0) {
 
                 int replace_index = 0; // where the repeated value should go
@@ -191,12 +193,24 @@ void GoBackN::run_sender() {
         
     }
     pthread_cancel(acks);
+
+
+    metrics.end_timer(); // END TIMER
+    metrics.set_total_pkts(max_packet_id+1); // SET TOTAL PACKETS = the last ID +1
+    metrics.set_total_bytes_sent((max_packet_id+1)*(packet_size-HEADERSIZE));
+    // SET BYTES SENT: = number of packets sent * packet_size-HEADERSIZE
+
+    // end transmission
+    cout << "File sent... sending termination packet..." << endl;
     memcpy(data_window[0], "/&&", 3);
     memset(&data_window[0][3], '\0', 1);
     send_packet(data_window[0]);
 
     cout << "\n\n~~Done~~\n\n";
 
+
+    // FINALLY, PRINT THE METRIC INFO
+    metrics.print_stats();
 
 }
 

@@ -71,7 +71,6 @@ Connector :: ~Connector () {
     close (sockfd);
     delete (key);
     delete (crc);
-    // delete [] buf; // buf is not newed anymore
 }
 
 bool Connector :: listen () {

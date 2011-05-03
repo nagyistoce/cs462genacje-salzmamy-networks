@@ -64,8 +64,6 @@ bool Node::validate(long& mine, long& theirs) {
 }
 
 void Node::newConnector(Connector* newC) {
-    // delete the old connector, set c to the newC
-    delete c;
     c = newC;
 }
 

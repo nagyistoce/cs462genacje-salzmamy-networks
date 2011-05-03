@@ -9,6 +9,7 @@
 #define	TRANSFERPROTOCOL_H
 
 #include "connector.h"
+#include "TransferMetrics.h"
 #include <iostream>
 #include <fstream>
 #include <pthread.h>
@@ -38,7 +39,7 @@ public:
 
 protected:
     Connector* c; // object that is used for secure transmission
-    
+    TransferMetrics metrics; // for displaying stats of the transmit
     long rtt; // round trip time - used for calculating timeouts
 
     int packet_size; // size of packet in bytes
