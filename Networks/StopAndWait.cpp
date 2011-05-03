@@ -47,6 +47,9 @@ void StopAndWait::run_sender() {
     pthread_t listenthread; // thread for listening
     ack_id = -1;
 
+    pthread_create(&listenthread,
+              NULL, ack_thread, this ); // modifies ack_id when done
+
     metrics.start_timer(); // START TIMER //
 
     int attempts = 0;
@@ -64,8 +67,7 @@ void StopAndWait::run_sender() {
             sent = send_packet(data);
             cout << "Packet " << pkt_id << " sent." << endl <<
                     "Attempt: " << attempts << endl;
-            pthread_create(&listenthread,
-              NULL, ack_thread, this ); // modifies ack_id when done
+            
 
 
             // must either receive ack or hit a timeout to resend...
@@ -87,7 +89,6 @@ void StopAndWait::run_sender() {
                 cout << "Packet " << pkt_id << " acked." << endl;
             } else {
                 attempts++;
-                pthread_cancel(listenthread);
                 cout << "Packet " << pkt_id << " timed out. Resending..." << endl;
                 metrics.increment_lost_pkts(1); // LOST A PACKET
             }
@@ -99,7 +100,7 @@ void StopAndWait::run_sender() {
         pkt_sent = false;
         memset(data, '\0', packet_size);
     }
-
+    pthread_cancel(listenthread);
     metrics.end_timer(); // END TIMER
     metrics.set_total_pkts(pkt_id+1); // SET TOTAL PACKETS = the last ID +1
     metrics.set_total_bytes_sent((pkt_id+1)*(packet_size-HEADERSIZE));
@@ -179,10 +180,15 @@ void* StopAndWait::ack_thread(void* sw) {
         cout << "ack_thread started..." << endl << endl;
         StopAndWait* s = (StopAndWait* )sw;
 
-        s->c->listen();
+        while(1) {
+            s->c->listen();
+            // store the packet_id of the ack into id
+            memcpy(&s->ack_id, s->c->get_msg(), sizeof(long));
+        }
+
         
-        // store the packet_id of the ack into id
-        memcpy(&s->ack_id, s->c->get_msg(), sizeof(long));
+        
+        
 
         cout << "ack_thread finished... id:" << (s->ack_id) << endl;
 }
