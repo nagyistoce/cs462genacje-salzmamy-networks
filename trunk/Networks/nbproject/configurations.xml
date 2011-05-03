@@ -12,29 +12,29 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>GoBackN.cpp</itemPath>
-      <itemPath>GoBackN.h</itemPath>
-      <itemPath>Node.cpp</itemPath>
-      <itemPath>Node.h</itemPath>
-      <itemPath>Node_Initiator.cpp</itemPath>
-      <itemPath>Node_Initiator.h</itemPath>
-      <itemPath>Node_KDC.cpp</itemPath>
-      <itemPath>Node_KDC.h</itemPath>
-      <itemPath>Node_Receiver.cpp</itemPath>
-      <itemPath>Node_Receiver.h</itemPath>
-      <itemPath>StopAndWait.cpp</itemPath>
-      <itemPath>StopAndWait.h</itemPath>
-      <itemPath>TransferMetrics.cpp</itemPath>
-      <itemPath>TransferMetrics.h</itemPath>
-      <itemPath>TransferProtocol.cpp</itemPath>
-      <itemPath>TransferProtocol.h</itemPath>
-      <itemPath>blowfish.cpp</itemPath>
-      <itemPath>blowfish.h</itemPath>
-      <itemPath>connector.cpp</itemPath>
-      <itemPath>connector.h</itemPath>
-      <itemPath>crc.cpp</itemPath>
-      <itemPath>crc.h</itemPath>
-      <itemPath>endian.cpp</itemPath>
+      <itemPath>genacje_salzmamy_GoBackN.cpp</itemPath>
+      <itemPath>genacje_salzmamy_GoBackN.h</itemPath>
+      <itemPath>genacje_salzmamy_Node.cpp</itemPath>
+      <itemPath>genacje_salzmamy_Node.h</itemPath>
+      <itemPath>genacje_salzmamy_Node_Initiator.cpp</itemPath>
+      <itemPath>genacje_salzmamy_Node_Initiator.h</itemPath>
+      <itemPath>genacje_salzmamy_Node_KDC.cpp</itemPath>
+      <itemPath>genacje_salzmamy_Node_KDC.h</itemPath>
+      <itemPath>genacje_salzmamy_Node_Receiver.cpp</itemPath>
+      <itemPath>genacje_salzmamy_Node_Receiver.h</itemPath>
+      <itemPath>genacje_salzmamy_StopAndWait.cpp</itemPath>
+      <itemPath>genacje_salzmamy_StopAndWait.h</itemPath>
+      <itemPath>genacje_salzmamy_TransferMetrics.cpp</itemPath>
+      <itemPath>genacje_salzmamy_TransferMetrics.h</itemPath>
+      <itemPath>genacje_salzmamy_TransferProtocol.cpp</itemPath>
+      <itemPath>genacje_salzmamy_TransferProtocol.h</itemPath>
+      <itemPath>genacje_salzmamy_blowfish.cpp</itemPath>
+      <itemPath>genacje_salzmamy_blowfish.h</itemPath>
+      <itemPath>genacje_salzmamy_connector.cpp</itemPath>
+      <itemPath>genacje_salzmamy_connector.h</itemPath>
+      <itemPath>genacje_salzmamy_crc.cpp</itemPath>
+      <itemPath>genacje_salzmamy_crc.h</itemPath>
+      <itemPath>genacje_salzmamy_endian.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>makefile</itemPath>
     </logicalFolder>
