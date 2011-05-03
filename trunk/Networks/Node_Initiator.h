@@ -27,7 +27,7 @@ private:
     char receiverURL[128];
     long nonce;
     char keyA[KEYSIZE];
-    char EKb_Ks[64];
+    char EKb_Ks[KEYSIZE];
     char keyS[KEYSIZE];
     
 };
