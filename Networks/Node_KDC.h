@@ -16,19 +16,17 @@ public:
     Node_KDC(Connector* c);
     virtual ~Node_KDC();
 
-    void listen();//**needs work still**
+    void listen();
+    
 private:
 
     /*~protocol methods~*/
     // called from within listen when a request comes in
-
     void getKeys(); // gets user input for the 3 keys
     void sendKDCResponse(); // sends the KDC response from to the initiator
-
     /*~~~~~~~~~~~~~~~~~~*/
 
     long nonce;
-
     char keyA[KEYSIZE];
     char keyB[KEYSIZE];
     char keyS[KEYSIZE];
