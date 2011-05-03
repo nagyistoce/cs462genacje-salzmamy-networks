@@ -167,10 +167,6 @@ void TransferProtocol::send_ack(long seq) {
 
 }
 
-// ack format should be [long seq|'ack' ... ]
-void TransferProtocol::listen_for_ack(void* id) {
-    c->listen();
-    memcpy(id, c->get_msg(), sizeof(long));
-}
+
 
 

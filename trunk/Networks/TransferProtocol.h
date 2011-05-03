@@ -60,10 +60,6 @@ protected:
     struct timeval send_packet(char* pkt); // sets send time in the packet **thread**
     void send_ack(long seq);
 
-    // thread compatible
-    void listen_for_ack(void* id); // returns the seq number of the ack'd packet
-
-
     void open_infile();
     bool read_infile(int bytes_to_read, char* array_to_fill);
 
