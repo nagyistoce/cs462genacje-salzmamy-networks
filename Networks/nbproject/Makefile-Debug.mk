@@ -32,17 +32,18 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/blowfish.o \
-	${OBJECTDIR}/SelectiveRepeat.o \
 	${OBJECTDIR}/Node_Initiator.o \
-	${OBJECTDIR}/Node.o \
 	${OBJECTDIR}/Node_Receiver.o \
 	${OBJECTDIR}/endian.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/GoBackN.o \
 	${OBJECTDIR}/connector.o \
-	${OBJECTDIR}/Packet.o \
 	${OBJECTDIR}/crc.o \
-	${OBJECTDIR}/Node_KDC.o
+	${OBJECTDIR}/TransferMetrics.o \
+	${OBJECTDIR}/Node_KDC.o \
+	${OBJECTDIR}/TransferProtocol.o \
+	${OBJECTDIR}/Node.o \
+	${OBJECTDIR}/StopAndWait.o
 
 # C Compiler Flags
 CFLAGS=
@@ -73,20 +74,10 @@ ${OBJECTDIR}/blowfish.o: nbproject/Makefile-${CND_CONF}.mk blowfish.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/blowfish.o blowfish.cpp
 
-${OBJECTDIR}/SelectiveRepeat.o: nbproject/Makefile-${CND_CONF}.mk SelectiveRepeat.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/SelectiveRepeat.o SelectiveRepeat.cpp
-
 ${OBJECTDIR}/Node_Initiator.o: nbproject/Makefile-${CND_CONF}.mk Node_Initiator.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_Initiator.o Node_Initiator.cpp
-
-${OBJECTDIR}/Node.o: nbproject/Makefile-${CND_CONF}.mk Node.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node.o Node.cpp
 
 ${OBJECTDIR}/Node_Receiver.o: nbproject/Makefile-${CND_CONF}.mk Node_Receiver.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -113,20 +104,35 @@ ${OBJECTDIR}/connector.o: nbproject/Makefile-${CND_CONF}.mk connector.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/connector.o connector.cpp
 
-${OBJECTDIR}/Packet.o: nbproject/Makefile-${CND_CONF}.mk Packet.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Packet.o Packet.cpp
-
 ${OBJECTDIR}/crc.o: nbproject/Makefile-${CND_CONF}.mk crc.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/crc.o crc.cpp
 
+${OBJECTDIR}/TransferMetrics.o: nbproject/Makefile-${CND_CONF}.mk TransferMetrics.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/TransferMetrics.o TransferMetrics.cpp
+
 ${OBJECTDIR}/Node_KDC.o: nbproject/Makefile-${CND_CONF}.mk Node_KDC.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_KDC.o Node_KDC.cpp
+
+${OBJECTDIR}/TransferProtocol.o: nbproject/Makefile-${CND_CONF}.mk TransferProtocol.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/TransferProtocol.o TransferProtocol.cpp
+
+${OBJECTDIR}/Node.o: nbproject/Makefile-${CND_CONF}.mk Node.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node.o Node.cpp
+
+${OBJECTDIR}/StopAndWait.o: nbproject/Makefile-${CND_CONF}.mk StopAndWait.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/StopAndWait.o StopAndWait.cpp
 
 # Subprojects
 .build-subprojects:

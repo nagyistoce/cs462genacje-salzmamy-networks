@@ -24,6 +24,8 @@
       <itemPath>Node_Receiver.h</itemPath>
       <itemPath>StopAndWait.cpp</itemPath>
       <itemPath>StopAndWait.h</itemPath>
+      <itemPath>TransferMetrics.cpp</itemPath>
+      <itemPath>TransferMetrics.h</itemPath>
       <itemPath>TransferProtocol.cpp</itemPath>
       <itemPath>TransferProtocol.h</itemPath>
       <itemPath>blowfish.cpp</itemPath>

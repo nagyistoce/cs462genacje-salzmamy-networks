@@ -20,6 +20,8 @@ TransferProtocol::TransferProtocol(Connector* c, int pkt_size, char* filename) {
     memset(fname, '\0', 128);
     memcpy(fname, filename, 128);
 
+    metrics = TransferMetrics();
+
 }
 
 TransferProtocol::TransferProtocol(const TransferProtocol& orig) {
@@ -84,7 +86,6 @@ int TransferProtocol::get_n_pings() {
     return i;
 }
 
-/*TODO: Test ping() and listen_for_pings()*/
 // called by child sender to calculate RTT
 void TransferProtocol::ping(int times) {
     long ping_sum = 0;
@@ -118,7 +119,7 @@ void TransferProtocol::ping(int times) {
     if (rtt > 10) {
         cout << "RTT set to the average ping (" << rtt << "ms)." << endl;
     } else {
-        rtt = 10; // 10 ms floor on the rtt
+        rtt = 10; // 10 ms floor on the rtt: prevent it from being 0 or very low
         cout << "RTT set to minimum: " << rtt << "ms." << endl;
     }
 }
