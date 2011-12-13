@@ -5,9 +5,26 @@ Connector :: Connector () {
 }
 
 Connector :: Connector (int port_num) {
+
+    // set display for encrypted data
+
+    cin.ignore(2048, '\n');
+    char print = 'x';
+
+    do {
+        cout << "Print encrypted data? (y/n): " << endl;
+        cin >> print;
+    } while (print != 'y' || print != 'n');
+
+    if (print == 'y') {
+        print_encrypted = true;
+    } else {
+        print_encrypted = false;
+    }
+
     crc = new CCRC32();
     crc->Initialize();
-    print_encrypted = false;
+    
     addr_len = sizeof (struct sockaddr);
     numbytes = 0;
     port = port_num;

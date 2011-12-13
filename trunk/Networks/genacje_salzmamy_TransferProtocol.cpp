@@ -21,6 +21,7 @@ TransferProtocol::TransferProtocol(Connector* c, int pkt_size, char* filename) {
     memcpy(fname, filename, 128);
 
     metrics = TransferMetrics();
+    
 
 }
 
