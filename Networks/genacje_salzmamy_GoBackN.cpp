@@ -30,6 +30,7 @@ void GoBackN::run_sender() {
 
     ping(get_n_pings());
 
+    
 
     // data_window is structured like:
     // [long id|     data    ...        ]
@@ -48,7 +49,9 @@ void GoBackN::run_sender() {
     struct timeval sent;
     struct timeval now;
     long time_diff = 0;
-    long timeout_interval = rtt * RTTMULT + window_size;
+
+    // assume 5ms file io time for each packet
+    long timeout_interval = (rtt + 5*window_size) * RTTMULT;
 
     lowest_ack_received = -1;
     // need a temp to set as we set up the arrays
@@ -85,7 +88,8 @@ void GoBackN::run_sender() {
             for (long i = 0; i < window_size; i++) {
                 memcpy(&last_id_sent, data_window[i], sizeof(long));
                 cout << "Resending packet: " << last_id_sent << endl;
-                send_packet(data_window[i]);     
+
+                send_packet(data_window[i]);
                 
             }
 
@@ -101,10 +105,7 @@ void GoBackN::run_sender() {
 
 
             // TRANSMIT //
-            gettimeofday(&sent, NULL); // set start time.
-
-            // need something that will not change so it will not get
-            // dynamically mutated and screw up the order
+            gettimeofday(&sent, NULL); // set start time of window transmit
             
             for (long i = 0; i < window_size; i++) {
 
@@ -115,11 +116,14 @@ void GoBackN::run_sender() {
                 } else {
                     if (read_infile(packet_size-HEADERSIZE, &data_window[i][HEADERSIZE])) {
                         // set packet id to be lowest ack received +1 + window offset(i)
-
                         last_id_sent = (tmp_last_received+i+1);
                         memcpy(data_window[i], &last_id_sent, sizeof(long));
-                        send_packet(data_window[i]);
+
+                        
                         cout << "Sending packet: " << last_id_sent << endl;
+                        send_packet(data_window[i]);
+                        
+
                     } else {
 
                         file_read = true;

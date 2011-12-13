@@ -10,13 +10,15 @@
 # Environment
 MKDIR=mkdir
 CP=cp
+GREP=grep
+NM=nm
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc
-CCC=g++
-CXX=g++
+CC=gcc.exe
+CCC=g++.exe
+CXX=g++.exe
 FC=
-AS=as
+AS=as.exe
 
 # Macros
 CND_PLATFORM=Cygwin-Windows
@@ -31,19 +33,21 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/blowfish.o \
-	${OBJECTDIR}/Node_Initiator.o \
-	${OBJECTDIR}/Node_Receiver.o \
-	${OBJECTDIR}/endian.o \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/GoBackN.o \
-	${OBJECTDIR}/connector.o \
-	${OBJECTDIR}/crc.o \
-	${OBJECTDIR}/TransferMetrics.o \
-	${OBJECTDIR}/Node_KDC.o \
-	${OBJECTDIR}/TransferProtocol.o \
-	${OBJECTDIR}/Node.o \
-	${OBJECTDIR}/StopAndWait.o
+	${OBJECTDIR}/genacje_salzmamy_connector.o \
+	${OBJECTDIR}/genacje_salzmamy_blowfish.o \
+	${OBJECTDIR}/genacje_salzmamy_TransferProtocol.o \
+	${OBJECTDIR}/genacje_salzmamy_AccuracyTest.o \
+	${OBJECTDIR}/genacje_salzmamy_Node.o \
+	${OBJECTDIR}/genacje_salzmamy_main.o \
+	${OBJECTDIR}/genacje_salzmamy_GoBackN.o \
+	${OBJECTDIR}/genacje_salzmamy_endian.o \
+	${OBJECTDIR}/genacje_salzmamy_Node_KDC.o \
+	${OBJECTDIR}/genacje_salzmamy_TransferMetrics.o \
+	${OBJECTDIR}/genacje_salzmamy_Node_Receiver.o \
+	${OBJECTDIR}/genacje_salzmamy_crc.o \
+	${OBJECTDIR}/genacje_salzmamy_StopAndWait.o \
+	${OBJECTDIR}/genacje_salzmamy_Node_Initiator.o
+
 
 # C Compiler Flags
 CFLAGS=
@@ -63,82 +67,87 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	${MAKE}  -f nbproject/Makefile-Debug.mk dist/Debug/Cygwin-Windows/networks.exe
+	"${MAKE}"  -f nbproject/Makefile-Debug.mk dist/Debug/Cygwin-Windows/networks.exe
 
 dist/Debug/Cygwin-Windows/networks.exe: ${OBJECTFILES}
 	${MKDIR} -p dist/Debug/Cygwin-Windows
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/networks ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/blowfish.o: nbproject/Makefile-${CND_CONF}.mk blowfish.cpp 
+${OBJECTDIR}/genacje_salzmamy_connector.o: genacje_salzmamy_connector.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/blowfish.o blowfish.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_connector.o genacje_salzmamy_connector.cpp
 
-${OBJECTDIR}/Node_Initiator.o: nbproject/Makefile-${CND_CONF}.mk Node_Initiator.cpp 
+${OBJECTDIR}/genacje_salzmamy_blowfish.o: genacje_salzmamy_blowfish.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_Initiator.o Node_Initiator.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_blowfish.o genacje_salzmamy_blowfish.cpp
 
-${OBJECTDIR}/Node_Receiver.o: nbproject/Makefile-${CND_CONF}.mk Node_Receiver.cpp 
+${OBJECTDIR}/genacje_salzmamy_TransferProtocol.o: genacje_salzmamy_TransferProtocol.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_Receiver.o Node_Receiver.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_TransferProtocol.o genacje_salzmamy_TransferProtocol.cpp
 
-${OBJECTDIR}/endian.o: nbproject/Makefile-${CND_CONF}.mk endian.cpp 
+${OBJECTDIR}/genacje_salzmamy_AccuracyTest.o: genacje_salzmamy_AccuracyTest.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/endian.o endian.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_AccuracyTest.o genacje_salzmamy_AccuracyTest.cpp
 
-${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
+${OBJECTDIR}/genacje_salzmamy_Node.o: genacje_salzmamy_Node.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_Node.o genacje_salzmamy_Node.cpp
 
-${OBJECTDIR}/GoBackN.o: nbproject/Makefile-${CND_CONF}.mk GoBackN.cpp 
+${OBJECTDIR}/genacje_salzmamy_main.o: genacje_salzmamy_main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/GoBackN.o GoBackN.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_main.o genacje_salzmamy_main.cpp
 
-${OBJECTDIR}/connector.o: nbproject/Makefile-${CND_CONF}.mk connector.cpp 
+${OBJECTDIR}/genacje_salzmamy_GoBackN.o: genacje_salzmamy_GoBackN.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/connector.o connector.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_GoBackN.o genacje_salzmamy_GoBackN.cpp
 
-${OBJECTDIR}/crc.o: nbproject/Makefile-${CND_CONF}.mk crc.cpp 
+${OBJECTDIR}/genacje_salzmamy_endian.o: genacje_salzmamy_endian.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/crc.o crc.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_endian.o genacje_salzmamy_endian.cpp
 
-${OBJECTDIR}/TransferMetrics.o: nbproject/Makefile-${CND_CONF}.mk TransferMetrics.cpp 
+${OBJECTDIR}/genacje_salzmamy_Node_KDC.o: genacje_salzmamy_Node_KDC.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/TransferMetrics.o TransferMetrics.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_Node_KDC.o genacje_salzmamy_Node_KDC.cpp
 
-${OBJECTDIR}/Node_KDC.o: nbproject/Makefile-${CND_CONF}.mk Node_KDC.cpp 
+${OBJECTDIR}/genacje_salzmamy_TransferMetrics.o: genacje_salzmamy_TransferMetrics.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node_KDC.o Node_KDC.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_TransferMetrics.o genacje_salzmamy_TransferMetrics.cpp
 
-${OBJECTDIR}/TransferProtocol.o: nbproject/Makefile-${CND_CONF}.mk TransferProtocol.cpp 
+${OBJECTDIR}/genacje_salzmamy_Node_Receiver.o: genacje_salzmamy_Node_Receiver.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/TransferProtocol.o TransferProtocol.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_Node_Receiver.o genacje_salzmamy_Node_Receiver.cpp
 
-${OBJECTDIR}/Node.o: nbproject/Makefile-${CND_CONF}.mk Node.cpp 
+${OBJECTDIR}/genacje_salzmamy_crc.o: genacje_salzmamy_crc.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Node.o Node.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_crc.o genacje_salzmamy_crc.cpp
 
-${OBJECTDIR}/StopAndWait.o: nbproject/Makefile-${CND_CONF}.mk StopAndWait.cpp 
+${OBJECTDIR}/genacje_salzmamy_StopAndWait.o: genacje_salzmamy_StopAndWait.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/StopAndWait.o StopAndWait.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_StopAndWait.o genacje_salzmamy_StopAndWait.cpp
+
+${OBJECTDIR}/genacje_salzmamy_Node_Initiator.o: genacje_salzmamy_Node_Initiator.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/genacje_salzmamy_Node_Initiator.o genacje_salzmamy_Node_Initiator.cpp
 
 # Subprojects
 .build-subprojects:
 
 # Clean Targets
-.clean-conf:
+.clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r build/Debug
 	${RM} dist/Debug/Cygwin-Windows/networks.exe
 

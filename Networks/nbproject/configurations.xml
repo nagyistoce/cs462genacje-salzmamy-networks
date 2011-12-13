@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="62">
+<configurationDescriptor version="69">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -12,6 +12,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>genacje_salzmamy_AccuracyTest.cpp</itemPath>
+      <itemPath>genacje_salzmamy_AccuracyTest.h</itemPath>
       <itemPath>genacje_salzmamy_GoBackN.cpp</itemPath>
       <itemPath>genacje_salzmamy_GoBackN.h</itemPath>
       <itemPath>genacje_salzmamy_Node.cpp</itemPath>
@@ -35,7 +37,8 @@
       <itemPath>genacje_salzmamy_crc.cpp</itemPath>
       <itemPath>genacje_salzmamy_crc.h</itemPath>
       <itemPath>genacje_salzmamy_endian.cpp</itemPath>
-      <itemPath>main.cpp</itemPath>
+      <itemPath>genacje_salzmamy_main.cpp</itemPath>
+      <itemPath>genacje_salzmamy_uml.vsd</itemPath>
       <itemPath>makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -44,6 +47,9 @@
       <itemPath>nbMakefile</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
   <projectmakefile>nbMakefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
@@ -53,10 +59,6 @@
         <platform>3</platform>
       </toolsSet>
       <compileType>
-        <linkerTool>
-          <linkerLibItems>
-          </linkerLibItems>
-        </linkerTool>
       </compileType>
     </conf>
     <conf name="Release" type="1">
@@ -75,10 +77,6 @@
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
         </fortranCompilerTool>
-        <linkerTool>
-          <linkerLibItems>
-          </linkerLibItems>
-        </linkerTool>
       </compileType>
     </conf>
   </confs>

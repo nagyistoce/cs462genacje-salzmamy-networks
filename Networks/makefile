@@ -8,7 +8,8 @@ HFILES=	genacje_salzmamy_connector.h genacje_salzmamy_blowfish.h genacje_salzmam
 	genacje_salzmamy_Node_KDC.h genacje_salzmamy_Node_Initiator.h \
         genacje_salzmamy_Node_Receiver.h genacje_salzmamy_crc.h  \
 	genacje_salzmamy_TransferProtocol.h genacje_salzmamy_StopAndWait.h \
-	genacje_salzmamy_GoBackN.h genacje_salzmamy_TransferMetrics.h
+	genacje_salzmamy_GoBackN.h genacje_salzmamy_TransferMetrics.h \
+	genacje_salzmamy_PacketDropper.h 
 
 
 CCFILES= $(HFILES:.h=.cpp) genacje_salzmamy_main.cpp genacje_salzmamy_endian.cpp

@@ -63,8 +63,11 @@ void StopAndWait::run_sender() {
         // send the filled packet
 
         do {
-            // sent time is stored
-            sent = send_packet(data);
+            
+            
+            sent = send_packet(data); // sent time is stored
+            
+            
             cout << "Packet " << pkt_id << " sent." << endl <<
                     "Attempt: " << attempts << endl;
             
