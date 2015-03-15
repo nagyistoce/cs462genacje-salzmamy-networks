@@ -1,0 +1,5 @@
+Introduction
+This lab project is an exercise in an all-inclusive experience in the major topics in Computer Networks, i.e., security, error control, sliding window protocols, and congestion control. The objective of this project is for you to put into practice the concepts you will learn in computer networks, in particular, concepts from transmission to end-to-end protocol design and implementation. You are required to implement a simple file transfer protocol (FTP) using Internet UDP sockets.
+
+You should ensure that files can be transferred from machines with different architectures, i.e., from a RISC box to an Intel box, or machines with the same architecture. The project must be implemented with the C++ language. You may use the ACE framework or any available networking APIs.
+Remember that we are doing this in software and that you should introduce situational errors to test the correctness of your implementation. This means that you must have the ability to force packets to be out of sequence, lost, damaged, and/or simulate lost acknowledgement packets. Situational errors can be randomly generated or user-specified (described later).
